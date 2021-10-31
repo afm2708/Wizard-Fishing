@@ -62,7 +62,7 @@ int main() {
 
 		// Update our LERP timers
 		float deltaTime = App::GetDeltaTime();
-		
+
 		// Get mouse position
 		double xpos, ypos;
 		glfwGetCursorPos(App::GetWindow(), &xpos, &ypos);
@@ -77,26 +77,26 @@ int main() {
 		ent_camera.transform.m_rotation = glm::rotate(ent_camera.transform.m_rotation, glm::radians(horizontalAngle), glm::vec3(0.0f, 1.0f, 0.0f));
 		if (Input::GetKey(GLFW_KEY_W)) {
 			//ent_ducky.transform.m_pos.z -= 2.0f * deltaTime;
-			ent_ducky.transform.m_pos.x += 0.2f * (float)sin(glm::radians(absoluteAngle));
-			ent_ducky.transform.m_pos.z += 0.2f * (float)cos(glm::radians(absoluteAngle));
+			ent_ducky.transform.m_pos.x += 2.0f * deltaTime * (float)sin(glm::radians(absoluteAngle));
+			ent_ducky.transform.m_pos.z += 2.0f * deltaTime * (float)cos(glm::radians(absoluteAngle));
 		}
 
 		if (Input::GetKey(GLFW_KEY_A)) {
 			//ent_ducky.transform.m_pos.x -= 2.0f * deltaTime;
-			ent_ducky.transform.m_pos.x -= 0.2f * (float)sin(glm::radians(absoluteAngle - 90));
-			ent_ducky.transform.m_pos.z -= 0.2f * (float)cos(glm::radians(absoluteAngle - 90));
+			ent_ducky.transform.m_pos.x -= 2.0f * deltaTime * (float)sin(glm::radians(absoluteAngle - 90));
+			ent_ducky.transform.m_pos.z -= 2.0f * deltaTime * (float)cos(glm::radians(absoluteAngle - 90));
 		}
 
 		if (Input::GetKey(GLFW_KEY_S)) {
 			//ent_ducky.transform.m_pos.z += 2.0f * deltaTime;
-			ent_ducky.transform.m_pos.x -= 0.2f * (float)sin(glm::radians(absoluteAngle));
-			ent_ducky.transform.m_pos.z -= 0.2f * (float)cos(glm::radians(absoluteAngle));
+			ent_ducky.transform.m_pos.x -= 2.0f * deltaTime * (float)sin(glm::radians(absoluteAngle));
+			ent_ducky.transform.m_pos.z -= 2.0f * deltaTime * (float)cos(glm::radians(absoluteAngle));
 		}
 
 		if (Input::GetKey(GLFW_KEY_D)) {
 			//ent_ducky.transform.m_pos.x += 2.0f * deltaTime;
-			ent_ducky.transform.m_pos.x -= 0.2f * (float)sin(glm::radians(absoluteAngle + 90));
-			ent_ducky.transform.m_pos.z -= 0.2f * (float)cos(glm::radians(absoluteAngle + 90));
+			ent_ducky.transform.m_pos.x -= 2.0f * deltaTime * (float)sin(glm::radians(absoluteAngle + 90));
+			ent_ducky.transform.m_pos.z -= 2.0f * deltaTime * (float)cos(glm::radians(absoluteAngle + 90));
 		}
 
 		if (Input::GetKeyDown(GLFW_KEY_Q)) {
@@ -119,7 +119,7 @@ int main() {
 		{
 			points[i]->transform.RecomputeGlobal();
 		}
-		
+
 		// Draw our points
 		for (int i = 0; i < points.size(); i++)
 		{
@@ -156,7 +156,7 @@ void LoadDefaultResources()
 	std::unique_ptr fs_unlitShader = std::make_unique<Shader>("shaders/unlit.frag", GL_FRAGMENT_SHADER);
 	std::vector<Shader*> unlit = { vs_unlitShader.get(), vs_unlitShader.get() };
 	prog_unlit = std::make_unique<ShaderProgram>(unlit);
-	
+
 	// Set up box
 	mesh_box = std::make_unique<Mesh>();
 	GLTF::LoadMesh("box/Box.gltf", *mesh_box);
