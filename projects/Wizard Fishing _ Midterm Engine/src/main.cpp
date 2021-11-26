@@ -50,6 +50,7 @@
 #include "Gameplay/Components/JumpBehaviour.h"
 #include "Gameplay/Components/RenderComponent.h"
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
+#include "Gameplay/Components/WizardMovement.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -59,6 +60,7 @@
 #include "Gameplay/Physics/Colliders/ConvexMeshCollider.h"
 #include "Gameplay/Physics/TriggerVolume.h"
 #include "Graphics/DebugDraw.h"
+#include "Gameplay/Components/SimpleCameraControl.h"
 
 //#define LOG_GL_NOTIFICATIONS
 
@@ -240,6 +242,8 @@ int main() {
 	ComponentManager::RegisterType<RotatingBehaviour>();
 	ComponentManager::RegisterType<JumpBehaviour>();
 	ComponentManager::RegisterType<MaterialSwapBehaviour>();
+	ComponentManager::RegisterType<WizardMovement>();
+	ComponentManager::RegisterType<SimpleCameraControl>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -265,6 +269,10 @@ int main() {
 
 		MeshResource::Sptr grassMesh = ResourceManager::CreateAsset<MeshResource>("Grass.obj");
 		Texture2D::Sptr    grassTexture = ResourceManager::CreateAsset<Texture2D>("textures/Grass.png");
+
+		MeshResource::Sptr wizardMesh = ResourceManager::CreateAsset<MeshResource>("Wizard.obj");
+
+		MeshResource::Sptr lakeMesh = ResourceManager::CreateAsset<MeshResource>("Lake Bottom.obj");
 
 		Texture2D::Sptr    boxTexture = ResourceManager::CreateAsset<Texture2D>("textures/box-diffuse.png");
 		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("textures/monkey-uvMap.png");
@@ -313,15 +321,15 @@ int main() {
 
 		// Create some lights for our scene
 		scene->Lights.resize(3);
-		scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		scene->Lights[0].Color = glm::vec3(0.5f, 0.0f, 0.7f);
-		scene->Lights[0].Range = 10.0f;
+		scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 50.0f);
+		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[0].Range = 100000.0f;
 
-		scene->Lights[1].Position = glm::vec3(1.0f, 0.0f, 3.0f);
+		/*scene->Lights[1].Position = glm::vec3(1.0f, 0.0f, 3.0f);
 		scene->Lights[1].Color = glm::vec3(0.2f, 0.8f, 0.1f);
 
 		scene->Lights[2].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		scene->Lights[2].Color = glm::vec3(1.0f, 0.2f, 0.1f);
+		scene->Lights[2].Color = glm::vec3(1.0f, 0.2f, 0.1f);*/
 
 
 
@@ -331,33 +339,66 @@ int main() {
 		planeMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(1.0f)));
 		planeMesh->GenerateMesh();
 
+
+		// Wizard/ log
+		GameObject::Sptr wizard = scene->CreateGameObject("Wizard");
+		{
+			// Scale up the plane
+			wizard->SetScale(glm::vec3(0.5F));
+			wizard->SetRotation(glm::vec3(90, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = wizard->Add<RenderComponent>();
+			renderer->SetMesh(wizardMesh);
+			renderer->SetMaterial(grassMaterial);
+
+			WizardMovement::Sptr move = wizard->Add<WizardMovement>();
+			move->speed = 2;
+		}
+
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{
 			camera->SetPostion(glm::vec3(0, 4, 4));
 			camera->LookAt(glm::vec3(0.0f));
 
+			camera->Add<SimpleCameraControl>();
+
 			Camera::Sptr cam = camera->Add<Camera>();
 
+			camera->Get<SimpleCameraControl>()->player = wizard->Get<WizardMovement>();
 			// Make sure that the camera is set as the scene's main camera!
 			scene->MainCamera = cam;
 		}
 
 
-
-		// Set up all our sample objects
-		GameObject::Sptr plane = scene->CreateGameObject("Plane");
+		GameObject::Sptr lake = scene->CreateGameObject("Lake Bottom");
 		{
 			// Scale up the plane
-			plane->SetScale(glm::vec3(10.0F));
+			lake->SetScale(glm::vec3(0.5F));
+			lake->SetRotation(glm::vec3(90, 0, 0));
+			lake->SetPostion(glm::vec3(0, 0, -0.590));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
+			RenderComponent::Sptr renderer = lake->Add<RenderComponent>();
+			renderer->SetMesh(lakeMesh);
+			renderer->SetMaterial(boxMaterial);
+
+		}
+		// Set up all our sample objects
+		GameObject::Sptr grass = scene->CreateGameObject("grass");
+		{
+			// Scale up the plane
+			grass->SetScale(glm::vec3(0.5F));
+			grass->SetRotation(glm::vec3(90, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = grass->Add<RenderComponent>();
 			renderer->SetMesh(grassMesh);
 			renderer->SetMaterial(grassMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
-			RigidBody::Sptr physics = plane->Add<RigidBody>(/*static by default*/);
+			RigidBody::Sptr physics = grass->Add<RigidBody>(/*static by default*/);
 			physics->AddCollider(PlaneCollider::Create());
 		}
 
@@ -493,7 +534,6 @@ int main() {
 					scene->Awake();
 				}
 			}
-
 			// Make a new area for the scene saving/loading
 			ImGui::Separator();
 			if (DrawSaveLoadImGui(scene, scenePath)) {
@@ -519,6 +559,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Update our application level uniforms every frame
+		
+
 
 		// Draw some ImGui stuff for the lights
 		if (isDebugWindowOpen) {
@@ -545,6 +587,7 @@ int main() {
 			// Split lights from the objects in ImGui
 			ImGui::Separator();
 		}
+		
 
 		dt *= playbackSpeed;
 
