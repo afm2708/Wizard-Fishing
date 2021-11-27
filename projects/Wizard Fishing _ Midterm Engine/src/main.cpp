@@ -51,6 +51,7 @@
 #include "Gameplay/Components/RenderComponent.h"
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/WizardMovement.h"
+#include "Gameplay/Components/SimpleCameraControl.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -60,7 +61,6 @@
 #include "Gameplay/Physics/Colliders/ConvexMeshCollider.h"
 #include "Gameplay/Physics/TriggerVolume.h"
 #include "Graphics/DebugDraw.h"
-#include "Gameplay/Components/SimpleCameraControl.h"
 
 //#define LOG_GL_NOTIFICATIONS
 
