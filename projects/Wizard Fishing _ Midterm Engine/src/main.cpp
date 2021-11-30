@@ -51,6 +51,10 @@
 #include "Gameplay/Components/RenderComponent.h"
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/WizardMovement.h"
+#include "Gameplay/Components/FishMovement.h"
+#include "Gameplay/Components/SimpleCameraControl.h"
+#include "Gameplay/Components/Minigame.h"
+#include "Gameplay/Components/TargetComponent.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -60,8 +64,6 @@
 #include "Gameplay/Physics/Colliders/ConvexMeshCollider.h"
 #include "Gameplay/Physics/TriggerVolume.h"
 #include "Graphics/DebugDraw.h"
-#include "Gameplay/Components/SimpleCameraControl.h"
-#include "Gameplay/Components/Minigame.h"
 
 //#define LOG_GL_NOTIFICATIONS
 
@@ -208,6 +210,9 @@ bool DrawLightImGui(const Scene::Sptr& scene, const char* title, int ix) {
 }
 
 int main() {
+
+	srand(static_cast <unsigned> (time(0)));
+
 	Logger::Init(); // We'll borrow the logger from the toolkit, but we need to initialize it
 
 	//Initialize GLFW
@@ -244,8 +249,10 @@ int main() {
 	ComponentManager::RegisterType<JumpBehaviour>();
 	ComponentManager::RegisterType<MaterialSwapBehaviour>();
 	ComponentManager::RegisterType<WizardMovement>();
+	ComponentManager::RegisterType<FishMovement>();
 	ComponentManager::RegisterType<SimpleCameraControl>();
 	ComponentManager::RegisterType<Minigame>();
+	ComponentManager::RegisterType<TargetComponent>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -455,8 +462,7 @@ int main() {
 			renderer->SetMesh(planeMesh);
 			renderer->SetMaterial(boxMaterial);
 
-			// This object is a renderable only, it doesn't have any behaviours or
-			// physics bodies attached!
+			square->Add<TargetComponent>();
 		}
 
 		GameObject::Sptr monkey1 = scene->CreateGameObject("Monkey 1");
@@ -497,6 +503,8 @@ int main() {
 			// This is an example of attaching a component and setting some parameters
 			RotatingBehaviour::Sptr behaviour = monkey2->Add<RotatingBehaviour>();
 			behaviour->RotationSpeed = glm::vec3(0.0f, 0.0f, -90.0f);
+			FishMovement::Sptr lerp = monkey2->Add<FishMovement>();
+			lerp->SetSpeed(6);
 		}
 
 		// Kinematic rigid bodies are those controlled by some outside controller
