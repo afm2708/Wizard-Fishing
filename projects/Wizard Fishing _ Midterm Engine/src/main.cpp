@@ -51,7 +51,6 @@
 #include "Gameplay/Components/RenderComponent.h"
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/WizardMovement.h"
-#include "Gameplay/Components/SimpleCameraControl.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -61,6 +60,8 @@
 #include "Gameplay/Physics/Colliders/ConvexMeshCollider.h"
 #include "Gameplay/Physics/TriggerVolume.h"
 #include "Graphics/DebugDraw.h"
+#include "Gameplay/Components/SimpleCameraControl.h"
+#include "Gameplay/Components/Minigame.h"
 
 //#define LOG_GL_NOTIFICATIONS
 
@@ -244,6 +245,7 @@ int main() {
 	ComponentManager::RegisterType<MaterialSwapBehaviour>();
 	ComponentManager::RegisterType<WizardMovement>();
 	ComponentManager::RegisterType<SimpleCameraControl>();
+	ComponentManager::RegisterType<Minigame>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -265,14 +267,16 @@ int main() {
 		}); 
 
 		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Monkey.obj");
-		MeshResource::Sptr worldMesh = ResourceManager::CreateAsset<MeshResource>("Wizard Fishing Environment.obj");
 
 		MeshResource::Sptr grassMesh = ResourceManager::CreateAsset<MeshResource>("Grass.obj");
 		Texture2D::Sptr    grassTexture = ResourceManager::CreateAsset<Texture2D>("textures/Grass.png");
 
+		MeshResource::Sptr bridgeMesh = ResourceManager::CreateAsset<MeshResource>("Bridge.obj");
+
 		MeshResource::Sptr wizardMesh = ResourceManager::CreateAsset<MeshResource>("Wizard.obj");
 
 		MeshResource::Sptr lakeMesh = ResourceManager::CreateAsset<MeshResource>("Lake Bottom.obj");
+		Texture2D::Sptr    lakeTexture = ResourceManager::CreateAsset<Texture2D>("textures/LakeTex.png");
 
 		Texture2D::Sptr    boxTexture = ResourceManager::CreateAsset<Texture2D>("textures/box-diffuse.png");
 		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("textures/monkey-uvMap.png");
@@ -316,6 +320,14 @@ int main() {
 			grassMaterial->MatShader = scene->BaseShader;
 			grassMaterial->Texture = grassTexture;
 			grassMaterial->Shininess = 256.0f;
+
+		}
+		Material::Sptr lakeMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			lakeMaterial->Name = "Grass";
+			lakeMaterial->MatShader = scene->BaseShader;
+			lakeMaterial->Texture = lakeTexture;
+			lakeMaterial->Shininess = 256.0f;
 
 		}
 
@@ -367,8 +379,24 @@ int main() {
 			Camera::Sptr cam = camera->Add<Camera>();
 
 			camera->Get<SimpleCameraControl>()->player = wizard->Get<WizardMovement>();
+
 			// Make sure that the camera is set as the scene's main camera!
 			scene->MainCamera = cam;
+		}
+
+		GameObject::Sptr MinigamePointer = scene->CreateGameObject("Minigame Pointer");
+		{
+			// Scale up the plane
+			MinigamePointer->SetScale(glm::vec3(0.5F));
+			MinigamePointer->SetRotation(glm::vec3(90, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = MinigamePointer->Add<RenderComponent>();
+			renderer->SetMesh(wizardMesh);
+			renderer->SetMaterial(grassMaterial);
+
+			//MinigamePointer->Get<Minigame>()->cameraCords = camera->Get<SimpleCameraControl>();
+			MinigamePointer->Add<Minigame>();
 		}
 
 
@@ -382,11 +410,11 @@ int main() {
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = lake->Add<RenderComponent>();
 			renderer->SetMesh(lakeMesh);
-			renderer->SetMaterial(boxMaterial);
+			renderer->SetMaterial(lakeMaterial);
 
 		}
 		// Set up all our sample objects
-		GameObject::Sptr grass = scene->CreateGameObject("grass");
+		GameObject::Sptr grass = scene->CreateGameObject("Grass");
 		{
 			// Scale up the plane
 			grass->SetScale(glm::vec3(0.5F));
@@ -400,6 +428,19 @@ int main() {
 			// Attach a plane collider that extends infinitely along the X/Y axis
 			RigidBody::Sptr physics = grass->Add<RigidBody>(/*static by default*/);
 			physics->AddCollider(PlaneCollider::Create());
+		}
+
+		GameObject::Sptr bridge = scene->CreateGameObject("Bridge");
+		{
+			// Scale up the plane
+			bridge->SetScale(glm::vec3(0.5F));
+			bridge->SetRotation(glm::vec3(90, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = bridge->Add<RenderComponent>();
+			renderer->SetMesh(bridgeMesh);
+			renderer->SetMaterial(boxMaterial);
+
 		}
 
 		GameObject::Sptr square = scene->CreateGameObject("Square");
