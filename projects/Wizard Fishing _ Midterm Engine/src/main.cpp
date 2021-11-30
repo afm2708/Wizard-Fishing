@@ -51,15 +51,12 @@
 #include "Gameplay/Components/RenderComponent.h"
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/WizardMovement.h"
-<<<<<<< Updated upstream
 #include "Gameplay/Components/FishMovement.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/Minigame.h"
 #include "Gameplay/Components/TargetComponent.h"
-=======
 #include "Gameplay/Components/TerrainRender.h"
 #include "Gameplay/Components/Casting.h"
->>>>>>> Stashed changes
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -257,11 +254,8 @@ int main() {
 	ComponentManager::RegisterType<FishMovement>();
 	ComponentManager::RegisterType<SimpleCameraControl>();
 	ComponentManager::RegisterType<Minigame>();
-<<<<<<< Updated upstream
 	ComponentManager::RegisterType<TargetComponent>();
-=======
 	ComponentManager::RegisterType<Casting>();
->>>>>>> Stashed changes
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
