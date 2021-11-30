@@ -51,10 +51,15 @@
 #include "Gameplay/Components/RenderComponent.h"
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/WizardMovement.h"
+<<<<<<< Updated upstream
 #include "Gameplay/Components/FishMovement.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/Minigame.h"
 #include "Gameplay/Components/TargetComponent.h"
+=======
+#include "Gameplay/Components/TerrainRender.h"
+#include "Gameplay/Components/Casting.h"
+>>>>>>> Stashed changes
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -104,7 +109,7 @@ GLFWwindow* window;
 // The current size of our window in pixels
 glm::ivec2 windowSize = glm::ivec2(800, 800);
 // The title of our GLFW window
-std::string windowTitle = "INFR-1350U";
+std::string windowTitle = "Wizard Fishing";
 
 // using namespace should generally be avoided, and if used, make sure it's ONLY in cpp files
 using namespace Gameplay;
@@ -252,7 +257,11 @@ int main() {
 	ComponentManager::RegisterType<FishMovement>();
 	ComponentManager::RegisterType<SimpleCameraControl>();
 	ComponentManager::RegisterType<Minigame>();
+<<<<<<< Updated upstream
 	ComponentManager::RegisterType<TargetComponent>();
+=======
+	ComponentManager::RegisterType<Casting>();
+>>>>>>> Stashed changes
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -389,6 +398,17 @@ int main() {
 
 			// Make sure that the camera is set as the scene's main camera!
 			scene->MainCamera = cam;
+		}
+
+		GameObject::Sptr Lure = scene->CreateGameObject("Lure");
+		{
+			Lure->SetScale(glm::vec3(0.5f));
+			
+			RenderComponent::Sptr renderer = Lure->Add<RenderComponent>();
+			renderer->SetMesh(monkeyMesh);
+			renderer->SetMaterial(monkeyMaterial);
+
+			Lure->Add<Casting>();
 		}
 
 		GameObject::Sptr MinigamePointer = scene->CreateGameObject("Minigame Pointer");
