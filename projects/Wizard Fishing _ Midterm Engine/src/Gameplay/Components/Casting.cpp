@@ -7,24 +7,66 @@
 #include "Utils/JsonGlmHelpers.h"
 #include <GLFW/glfw3.h>
 
+Casting::Casting() {
+	timer = 0.0f;
+	speed = 1;
+	hasFinished = false;
+	hasCast = false;
+	time = 0;
+
+	//points[0] = glm::vec3(0, 4, 4);
+	//points[1] = glm::vec3(10, 0, 10);
+}
+
+void Casting::SetTarget(glm::vec3 point) {
+	points[2] = point;
+	points[1] = glm::vec3((points[0].x + points[2].x) / 2, (points[0].y + points[2].y) / 2, 10);
+}
+
 void Casting::Update(float deltaTime) {
-	if (glfwGetMouseButton(GetGameObject()->GetScene()->Window, 0))
+	glm::vec3 p0, p1, p2;
+	points[0] = GetGameObject()->GetScene()->FindObjectByName("Main Camera")->GetPosition();
+	if (hasCast) timer += deltaTime;
+
+	if (timer > speed && hasCast)
+	{
+		timer -= speed;
+		//std::cout << "reached";
+		hasFinished = true;
+		hasCast = false;
+	}
+
+	time = timer / speed;
+	
+	p0 = points[0];
+	p1 = points[1];
+	p2 = points[2];
+
+	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_R))
 	{
 		hasCast = true;
+		SetTarget(GetGameObject()->GetScene()->FindObjectByName("Target")->GetPosition());
 	}
 
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
 	{
-		hasCast = false;
+		hasFinished = false;
 	}
 	
-	if (hasCast = true)
+	if (hasCast && !hasFinished)
 	{
-		GetGameObject()->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+		GetGameObject()->SetPostion(Bezier(p0, p1, p2, time));
 	}
-	else
+	else if (!hasCast)
 	{
 		GetGameObject()->SetPostion(GetGameObject()->GetScene()->FindObjectByName("Main Camera")->GetPosition());
+		//std::cout << "woop";
+	}
+
+	if (hasFinished)
+	{
+		GetGameObject()->SetPostion(p2);
+		//std::cout << "reached";
 	}
 }
 

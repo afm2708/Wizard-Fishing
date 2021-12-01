@@ -5,12 +5,22 @@
 class Casting : public Gameplay::IComponent {
 public:
 	typedef std::shared_ptr<Casting> Sptr;
-	Casting() = default;
+	Casting();
 
-	
+	void SetTarget(glm::vec3 point);
+
 	virtual void Update(float deltaTime) override;
-	float speed;
+	glm::vec3 points [3];
+	float speed, timer;
+	float time;
 	bool hasCast;
+	bool hasFinished;
+
+	glm::vec3 Bezier(const glm::vec3& p0, const glm::vec3& p1, const glm::vec3& p2, float t)
+	{
+		return (1-t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
+	}
+
 	TargetComponent::Sptr target;
 	virtual void RenderImGui() override;
 
