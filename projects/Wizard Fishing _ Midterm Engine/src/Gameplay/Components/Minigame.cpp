@@ -8,6 +8,7 @@
 #include "Gameplay/Scene.h"
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
+#include <Gameplay/Components/FishMovement.h>
 
 Minigame::Minigame() :
 	IComponent(),
@@ -31,7 +32,7 @@ void Minigame::Update(float deltaTime)
 {
 
 
-	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+	if (GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->hooked) {
 		minigameActive = true;
 	}
 

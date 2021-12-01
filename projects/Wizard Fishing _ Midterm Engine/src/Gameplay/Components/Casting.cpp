@@ -33,7 +33,6 @@ void Casting::Update(float deltaTime) {
 		timer -= speed;
 		//std::cout << "reached";
 		hasFinished = true;
-		hasCast = false;
 	}
 
 	time = timer / speed;
@@ -42,7 +41,7 @@ void Casting::Update(float deltaTime) {
 	p1 = points[1];
 	p2 = points[2];
 
-	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_R))
+	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_R) && !hasCast)
 	{
 		hasCast = true;
 		SetTarget(GetGameObject()->GetScene()->FindObjectByName("Target")->GetPosition());
@@ -51,6 +50,7 @@ void Casting::Update(float deltaTime) {
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
 	{
 		hasFinished = false;
+		hasCast = false;
 	}
 	
 	if (hasCast && !hasFinished)
@@ -60,13 +60,11 @@ void Casting::Update(float deltaTime) {
 	else if (!hasCast)
 	{
 		GetGameObject()->SetPostion(GetGameObject()->GetScene()->FindObjectByName("Main Camera")->GetPosition());
-		//std::cout << "woop";
 	}
 
 	if (hasFinished)
 	{
 		GetGameObject()->SetPostion(p2);
-		//std::cout << "reached";
 	}
 }
 
