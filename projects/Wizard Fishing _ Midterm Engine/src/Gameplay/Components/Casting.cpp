@@ -18,7 +18,7 @@ void Casting::Update(float deltaTime) {
 		hasCast = false;
 	}
 	
-	if (hasCast)
+	if (hasCast = true)
 	{
 		GetGameObject()->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
 	}

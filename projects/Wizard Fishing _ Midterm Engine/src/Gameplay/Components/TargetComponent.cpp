@@ -79,6 +79,10 @@ void TargetComponent::Update(float deltaTime)
 			fishing = true;
 			GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, -20.0f));
 		}
+		if (glfwGetKey(_window, GLFW_KEY_Q)) {
+			fishing = false;
+			GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, 0.0f));
+		}
 	}
 }
 

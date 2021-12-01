@@ -15,6 +15,7 @@ public:
 	Minigame();
 	virtual ~Minigame();
 	SimpleCameraControl::Sptr cameraCords;
+	
 
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;

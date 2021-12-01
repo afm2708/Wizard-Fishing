@@ -276,20 +276,38 @@ int main() {
 			{ ShaderPartType::Fragment, "shaders/frag_blinn_phong_textured.glsl" }
 		}); 
 
-		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Monkey.obj");
+		//Each object 
+		MeshResource::Sptr bobberMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Bobber.obj");
+		Texture2D::Sptr	   bobberTex = ResourceManager::CreateAsset<Texture2D>("Textures/BobberTex.png");
 
-		MeshResource::Sptr grassMesh = ResourceManager::CreateAsset<MeshResource>("Grass.obj");
-		Texture2D::Sptr    grassTexture = ResourceManager::CreateAsset<Texture2D>("textures/Grass.png");
+		Texture2D::Sptr    boxTex = ResourceManager::CreateAsset<Texture2D>("Textures/BoxTex.png");
 
-		MeshResource::Sptr bridgeMesh = ResourceManager::CreateAsset<MeshResource>("Bridge.obj");
+		MeshResource::Sptr bridgeMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Bridge.obj");
+		//Texture2D::Sptr	   bridgeTex = ResourceManager::CreateAsset<Texture2D>("Textures/BridgeTex.png");
 
-		MeshResource::Sptr wizardMesh = ResourceManager::CreateAsset<MeshResource>("Wizard.obj");
+		MeshResource::Sptr fishMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Fish.obj");
+		Texture2D::Sptr	   fishTex = ResourceManager::CreateAsset<Texture2D>("Textures/FishTex.png");
 
-		MeshResource::Sptr lakeMesh = ResourceManager::CreateAsset<MeshResource>("Lake Bottom.obj");
-		Texture2D::Sptr    lakeTexture = ResourceManager::CreateAsset<Texture2D>("textures/LakeTex.png");
+		MeshResource::Sptr grassMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Grass.obj");
+		Texture2D::Sptr    grassTexture = ResourceManager::CreateAsset<Texture2D>("Textures/Grass.png");
 
-		Texture2D::Sptr    boxTexture = ResourceManager::CreateAsset<Texture2D>("textures/box-diffuse.png");
-		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("textures/monkey-uvMap.png");
+		MeshResource::Sptr lakeBottomMesh = ResourceManager::CreateAsset<MeshResource>("Objects/LakeBottom.obj");
+		Texture2D::Sptr    lakeBottomTexture = ResourceManager::CreateAsset<Texture2D>("Textures/LakeBottomTex.png");
+
+		//MeshResource::Sptr minigamePointerMesh = ResourceManager::CreateAsset<MeshResource>("Objects/MinigamePointer.obj");
+		Texture2D::Sptr    minigamePointerTex = ResourceManager::CreateAsset<Texture2D>("Textures/MinigamePointer.png");
+
+		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Monkey.obj");
+		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/MonkeyTex.png");
+
+		MeshResource::Sptr targetMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Target.obj");
+		Texture2D::Sptr    targetTex = ResourceManager::CreateAsset<Texture2D>("Textures/TargetTex.png");
+		
+
+		MeshResource::Sptr wizardMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard.obj");
+		//Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTex.png");
+
+	
 
 		// Create an empty scene
 		scene = std::make_shared<Scene>();
@@ -298,29 +316,36 @@ int main() {
 		scene->BaseShader = uboShader;
 
 		// Create our materials
+		Material::Sptr bobberMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			bobberMaterial->Name = "Bobber";
+			bobberMaterial->MatShader = scene->BaseShader;
+			bobberMaterial->Texture = bobberTex;
+			bobberMaterial->Shininess = 2.0f;
+		}
+
 		Material::Sptr boxMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			boxMaterial->Name = "Box";
 			boxMaterial->MatShader = scene->BaseShader;
-			boxMaterial->Texture = boxTexture;
+			boxMaterial->Texture = boxTex;
 			boxMaterial->Shininess = 2.0f;
 		}
 
-		Material::Sptr monkeyMaterial = ResourceManager::CreateAsset<Material>();
+		/*Material::Sptr bridgeMaterial = ResourceManager::CreateAsset<Material>();
 		{
-			monkeyMaterial->Name = "Monkey";
-			monkeyMaterial->MatShader = scene->BaseShader;
-			monkeyMaterial->Texture = monkeyTex;
-			monkeyMaterial->Shininess = 256.0f;
+			bridgeMaterial->Name = "Bridge";
+			bridgeMaterial->MatShader = scene->BaseShader;
+			bridgeMaterial->Texture = bridgeTex;
+			bridgeMaterial->Shininess = 2.0f;
+		}*/
 
-		}
-
-		Material::Sptr worldMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr fishMaterial = ResourceManager::CreateAsset<Material>();
 		{
-			worldMaterial->Name = "World";
-			worldMaterial->MatShader = scene->BaseShader;
-			worldMaterial->Texture = boxTexture;
-			worldMaterial->Shininess = 256.0f;
+			fishMaterial->Name = "Fish";
+			fishMaterial->MatShader = scene->BaseShader;
+			fishMaterial->Texture = fishTex;
+			fishMaterial->Shininess = 256.0f;
 
 		}
 
@@ -332,12 +357,40 @@ int main() {
 			grassMaterial->Shininess = 256.0f;
 
 		}
-		Material::Sptr lakeMaterial = ResourceManager::CreateAsset<Material>();
+
+		Material::Sptr lakeBottomMaterial = ResourceManager::CreateAsset<Material>();
 		{
-			lakeMaterial->Name = "Grass";
-			lakeMaterial->MatShader = scene->BaseShader;
-			lakeMaterial->Texture = lakeTexture;
-			lakeMaterial->Shininess = 256.0f;
+			lakeBottomMaterial->Name = "Lake";
+			lakeBottomMaterial->MatShader = scene->BaseShader;
+			lakeBottomMaterial->Texture = lakeBottomTexture;
+			lakeBottomMaterial->Shininess = 256.0f;
+
+		}
+
+		Material::Sptr minigamePointerMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			minigamePointerMaterial->Name = "Minigame Pointer";
+			minigamePointerMaterial->MatShader = scene->BaseShader;
+			minigamePointerMaterial->Texture = minigamePointerTex;
+			minigamePointerMaterial->Shininess = 256.0f;
+
+		}
+
+		Material::Sptr monkeyMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			monkeyMaterial->Name = "Monkey";
+			monkeyMaterial->MatShader = scene->BaseShader;
+			monkeyMaterial->Texture = monkeyTex;
+			monkeyMaterial->Shininess = 256.0f;
+
+		}
+
+		Material::Sptr targetMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			targetMaterial->Name = "Target";
+			targetMaterial->MatShader = scene->BaseShader;
+			targetMaterial->Texture = targetTex;
+			targetMaterial->Shininess = 256.0f;
 
 		}
 
@@ -394,17 +447,6 @@ int main() {
 			scene->MainCamera = cam;
 		}
 
-		GameObject::Sptr Lure = scene->CreateGameObject("Lure");
-		{
-			Lure->SetScale(glm::vec3(0.5f));
-			
-			RenderComponent::Sptr renderer = Lure->Add<RenderComponent>();
-			renderer->SetMesh(monkeyMesh);
-			renderer->SetMaterial(monkeyMaterial);
-
-			Lure->Add<Casting>();
-		}
-
 		GameObject::Sptr MinigamePointer = scene->CreateGameObject("Minigame Pointer");
 		{
 			// Scale up the plane
@@ -421,17 +463,17 @@ int main() {
 		}
 
 
-		GameObject::Sptr lake = scene->CreateGameObject("Lake Bottom");
+		GameObject::Sptr lakeBottom = scene->CreateGameObject("Lake Bottom");
 		{
-			// Scale up the plane
-			lake->SetScale(glm::vec3(0.5F));
-			lake->SetRotation(glm::vec3(90, 0, 0));
-			lake->SetPostion(glm::vec3(0, 0, -0.590));
+			
+			lakeBottom->SetScale(glm::vec3(0.5F));
+			lakeBottom->SetRotation(glm::vec3(90, 0, 0));
+			lakeBottom->SetPostion(glm::vec3(0, 0, -0.590));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = lake->Add<RenderComponent>();
-			renderer->SetMesh(lakeMesh);
-			renderer->SetMaterial(lakeMaterial);
+			RenderComponent::Sptr renderer = lakeBottom->Add<RenderComponent>();
+			renderer->SetMesh(lakeBottomMesh);
+			renderer->SetMaterial(lakeBottomMaterial);
 
 		}
 		// Set up all our sample objects
@@ -464,19 +506,31 @@ int main() {
 
 		}
 
-		GameObject::Sptr square = scene->CreateGameObject("Square");
+		GameObject::Sptr target = scene->CreateGameObject("Target");
 		{
 			// Set position in the scene
-			square->SetPostion(glm::vec3(0.0f, 0.0f, 2.0f));
+			target->SetPostion(glm::vec3(0.0f, 0.0f, 2.0f));
 			// Scale down the plane
-			square->SetScale(glm::vec3(0.5f));
+			target->SetScale(glm::vec3(0.5f));
 
 			// Create and attach a render component
-			RenderComponent::Sptr renderer = square->Add<RenderComponent>();
-			renderer->SetMesh(planeMesh);
-			renderer->SetMaterial(boxMaterial);
+			RenderComponent::Sptr renderer = target->Add<RenderComponent>();
+			renderer->SetMesh(targetMesh);
+			renderer->SetMaterial(targetMaterial);
 
-			square->Add<TargetComponent>();
+			target->Add<TargetComponent>();
+		}
+
+		GameObject::Sptr Bobber = scene->CreateGameObject("Bobber");
+		{
+			Bobber->SetScale(glm::vec3(0.5f));
+
+			RenderComponent::Sptr renderer = Bobber->Add<RenderComponent>();
+			renderer->SetMesh(bobberMesh);
+			renderer->SetMaterial(bobberMaterial);
+
+			Bobber->Add<Casting>();
+			Bobber->Get<Casting>()->target = target->Get<TargetComponent>();
 		}
 
 		GameObject::Sptr monkey1 = scene->CreateGameObject("Monkey 1");
@@ -503,28 +557,21 @@ int main() {
 			triggerInteraction->ExitMaterial = monkeyMaterial;
 		}
 
-		GameObject::Sptr monkey2 = scene->CreateGameObject("Complex Object");
+		GameObject::Sptr Fish = scene->CreateGameObject("Fish");
 		{
 			// Set and rotation position in the scene
-			monkey2->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
-			monkey2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			Fish->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
+			//Fish->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 
 			// Add a render component
-			RenderComponent::Sptr renderer = monkey2->Add<RenderComponent>();
-			renderer->SetMesh(monkeyMesh);
-			renderer->SetMaterial(boxMaterial);
+			RenderComponent::Sptr renderer = Fish->Add<RenderComponent>();
+			renderer->SetMesh(fishMesh);
+			renderer->SetMaterial(fishMaterial);
 
-			// This is an example of attaching a component and setting some parameters
-			RotatingBehaviour::Sptr behaviour = monkey2->Add<RotatingBehaviour>();
-			behaviour->RotationSpeed = glm::vec3(0.0f, 0.0f, -90.0f);
-			FishMovement::Sptr lerp = monkey2->Add<FishMovement>();
+			FishMovement::Sptr lerp = Fish->Add<FishMovement>();
 			lerp->SetSpeed(6);
 		}
 
-		// Kinematic rigid bodies are those controlled by some outside controller
-		// and ONLY collide with dynamic objects
-		RigidBody::Sptr physics = monkey2->Add<RigidBody>(RigidBodyType::Kinematic);
-		physics->AddCollider(ConvexMeshCollider::Create());
 
 		// Create a trigger volume for testing how we can detect collisions with objects!
 		GameObject::Sptr trigger = scene->CreateGameObject("Trigger"); 

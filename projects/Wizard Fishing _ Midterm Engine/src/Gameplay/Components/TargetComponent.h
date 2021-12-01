@@ -1,6 +1,5 @@
 #pragma once
 #include "IComponent.h"
-#include "WizardMovement.h"
 
 struct GLFWwindow;
 
@@ -14,7 +13,6 @@ public:
 
 	TargetComponent();
 	virtual ~TargetComponent();
-	WizardMovement::Sptr player;
 
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
