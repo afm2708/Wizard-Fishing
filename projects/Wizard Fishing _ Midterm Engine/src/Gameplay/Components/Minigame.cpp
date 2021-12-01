@@ -11,8 +11,14 @@
 
 Minigame::Minigame() :
 	IComponent(),
-	_moveSpeeds(),
-	_isSpacePressed(false)
+	moveX(0.0),
+	moveY(0.0),
+	moveSpeedX(0.05),
+	moveSpeedY(0.05),
+	middleX(),
+	middleY(),
+	flip(20.0f),
+	minigameActive(false)
 {}
 
 Minigame::~Minigame() = default;
@@ -26,41 +32,59 @@ void Minigame::Update(float deltaTime)
 
 
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		_isSpacePressed = true;
-	}
-	else {
-		_isSpacePressed = false;
+		minigameActive = true;
 	}
 
-	if (_isSpacePressed == true) {
-		GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x + _moveSpeeds * deltaTime, GetGameObject()->GetPosition().y, 0.0f));
+	if (minigameActive == true) {
 
-		if (GetGameObject()->GetPosition().x >= 20.0f) {
-			_moveSpeeds = -abs(_moveSpeeds);
+		//my head + how far from my head + cos theta
+		middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f/ 180.0f)));
+		//my head + how far from my head + sin theta
+		middleY = cameraCords->GetGameObject()->GetPosition().y + 2.0f * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+
+		flip += 1.0f;
+
+		if (flip >= 40.0f) {
+			moveSpeedX = -moveSpeedX;
+			moveSpeedY = -moveSpeedY;
+			flip = 0.0f;
 		}
-		if (GetGameObject()->GetPosition().x <= -20.0f) {
-			_moveSpeeds = abs(_moveSpeeds);
-		}
+
+		moveX += moveSpeedX * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+		moveY += moveSpeedY * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+
+		GetGameObject()->SetRotation(glm::vec3(90.0f, 0, cameraCords->GetGameObject()->GetRotationEuler().z));
+		GetGameObject()->SetPostion(glm::vec3(middleX + moveX, middleY + moveY, 4.0f));
 	}
 
 	else {
-		GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -10.0));
+		GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
+		moveX = 0.0f;
+	}
+	if (glfwGetMouseButton(_window, 0) && flip >= 17.0f && flip <= 23.0f) {
+		minigameActive = false;
+		GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
+		moveX = 0.0f;
+		moveY =0.0f;
 	}
 }
 
 void Minigame::RenderImGui()
 {
-	LABEL_LEFT(ImGui::DragFloat, "Speed       ", &_moveSpeeds, 0.01f, 0.01f);
+	LABEL_LEFT(ImGui::DragFloat, "Speed       ", &moveSpeedX, 0.01f, 0.01f);
+	LABEL_LEFT(ImGui::DragFloat, "Speed       ", &moveSpeedY, 0.01f, 0.01f);
 }
 
 nlohmann::json Minigame::ToJson() const {
 	return {
-		{ "move_speed", (_moveSpeeds) },
+		{ "move_speedX", (moveSpeedX) },
+		{ "move_speedY", (moveSpeedY) },
 	};
 }
 
 Minigame::Sptr Minigame::FromJson(const nlohmann::json& blob) {
 	Minigame::Sptr result = std::make_shared<Minigame>();
-	result->_moveSpeeds       = (blob["move_speed"]);
+	result->moveSpeedX = (blob["move_speedX"]);
+	result->moveSpeedY = (blob["move_speedY"]);
 	return result;
 }

@@ -28,9 +28,15 @@ public:
 
 
 protected:
-	float _moveSpeeds;
+	float moveX;
+	float moveY;
+	float moveSpeedX;
+	float moveSpeedY;
+	float middleX;
+	float middleY;
+	float flip;
 
-	bool _isSpacePressed = false;
+	bool minigameActive = false;
 	GLFWwindow* _window;
 };
 

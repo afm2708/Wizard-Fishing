@@ -65,9 +65,7 @@ void SimpleCameraControl::Update(float deltaTime)
 		if (glfwGetKey(_window, GLFW_KEY_LEFT_CONTROL)) {
 			input.y -= _moveSpeeds.z;
 		}
-		if (glfwGetKey(_window, GLFW_KEY_SPACE)) {
-			input.y += _moveSpeeds.z;
-		}
+
 		
 		if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT)) {
 			input *= _shiftMultipler;

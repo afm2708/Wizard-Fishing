@@ -395,8 +395,8 @@ int main() {
 			renderer->SetMesh(wizardMesh);
 			renderer->SetMaterial(grassMaterial);
 
-			//MinigamePointer->Get<Minigame>()->cameraCords = camera->Get<SimpleCameraControl>();
 			MinigamePointer->Add<Minigame>();
+			MinigamePointer->Get<Minigame>()->cameraCords = camera->Get<SimpleCameraControl>();
 		}
 
 
