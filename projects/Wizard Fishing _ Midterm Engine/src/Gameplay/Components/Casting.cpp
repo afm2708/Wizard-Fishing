@@ -24,14 +24,12 @@ void Casting::SetTarget(glm::vec3 point) {
 }
 
 void Casting::Update(float deltaTime) {
+	glm::vec3 p0, p1, p2;
 	if (!(Casting::pause->isPaused))
 	{
-		glm::vec3 p0, p1, p2;
+
 		points[0] = GetGameObject()->GetScene()->FindObjectByName("Main Camera")->GetPosition();
 		if (hasCast) timer += deltaTime;
-		timer -= speed;
-		//std::cout << "reached";
-		hasFinished = true;
 	}
 
 		if (timer > speed && hasCast)
@@ -48,32 +46,8 @@ void Casting::Update(float deltaTime) {
 		p1 = points[1];
 		p2 = points[2];
 
-		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_R))
-		{
-			hasCast = true;
-			SetTarget(GetGameObject()->GetScene()->FindObjectByName("Target")->GetPosition());
-		}
 
-		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
-		{
-			hasFinished = false;
-		}
 
-		if (hasCast && !hasFinished)
-		{
-			GetGameObject()->SetPostion(Bezier(p0, p1, p2, time));
-		}
-		else if (!hasCast)
-		{
-			GetGameObject()->SetPostion(GetGameObject()->GetScene()->FindObjectByName("Main Camera")->GetPosition());
-			//std::cout << "woop";
-		}
-
-		if (hasFinished)
-		{
-			GetGameObject()->SetPostion(p2);
-			//std::cout << "reached";
-		}
 
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_R) && !hasCast)
 	{

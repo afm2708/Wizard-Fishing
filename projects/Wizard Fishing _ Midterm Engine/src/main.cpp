@@ -498,9 +498,26 @@ int main() {
 			Camera::Sptr cam = camera->Add<Camera>();
 
 			camera->Get<SimpleCameraControl>()->player = wizard->Get<WizardMovement>();
+			camera->Add<PauseBehaviour>();
+			camera->Get<SimpleCameraControl>()->pause = camera->Get<PauseBehaviour>();
 
 			// Make sure that the camera is set as the scene's main camera!
 			scene->MainCamera = cam;
+		}
+
+		GameObject::Sptr Book = scene->CreateGameObject("Book");
+		{
+			// Scale up the plane
+			Book->SetScale(glm::vec3(0.5F));
+			Book->SetRotation(glm::vec3(90, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = Book->Add<RenderComponent>();
+			renderer->SetMesh(dockMesh);
+			renderer->SetMaterial(dockMaterial);
+
+			Book->Add<PauseBehaviour>();
+
 		}
 
 		GameObject::Sptr MinigamePointer = scene->CreateGameObject("Minigame Pointer");
@@ -515,7 +532,8 @@ int main() {
 			renderer->SetMaterial(grassMaterial);
 
 			MinigamePointer->Add<Minigame>();
-			MinigamePointer->Get<Minigame>()->cameraCords = camera->Get<SimpleCameraControl>();
+			MinigamePointer->Get<Minigame>()->pause = Book->Get<PauseBehaviour>();
+			MinigamePointer->Get<Minigame>()->cameraCords = MinigamePointer->Get<SimpleCameraControl>();
 		}
 
 
@@ -575,6 +593,7 @@ int main() {
 			renderer->SetMaterial(targetMaterial);
 
 			target->Add<TargetComponent>();
+			target->Get<TargetComponent>()->pause = Book->Get<PauseBehaviour>();
 		}
 
 		GameObject::Sptr Bobber = scene->CreateGameObject("Bobber");
@@ -586,6 +605,8 @@ int main() {
 			renderer->SetMaterial(bobberMaterial);
 
 			Bobber->Add<Casting>();
+
+			Bobber->Get<Casting>()->pause = Book->Get<PauseBehaviour>();
 			Bobber->Get<Casting>()->target = target->Get<TargetComponent>();
 		}
 
@@ -625,6 +646,7 @@ int main() {
 			renderer->SetMaterial(fishMaterial);
 
 			FishMovement::Sptr lerp = Fish->Add<FishMovement>();
+			Fish->Get<FishMovement>()->pause = Book->Get<PauseBehaviour>();
 			lerp->SetSpeed(6);
 		}
 

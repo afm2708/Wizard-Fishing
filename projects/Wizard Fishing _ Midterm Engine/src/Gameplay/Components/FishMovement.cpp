@@ -28,79 +28,60 @@ FishMovement::FishMovement() {
 void FishMovement::Update(float deltaTime) {
 	if (!(FishMovement::pause->isPaused))
 	{
-		timer += deltaTime;
-		//Ensure we are not "over time" and move to the next segment
-		//if necessary.
-		while (timer > speed)
-		{
-			timer -= speed;
+        if (GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasFinished && !lured
+            && abs(GetGameObject()->GetPosition().x - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().x) <= 5
+            && abs(GetGameObject()->GetPosition().y - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().y) <= 5) {
+            std::vector<glm::vec3> caughtPoints;
+            caughtPoints.push_back(GetGameObject()->GetPosition());
+            caughtPoints.push_back(GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition());
+            SetPoints(caughtPoints);
+            lured = true;
+        }
+        if (!hooked) timer += deltaTime;
+        //Ensure we are not "over time" and move to the next segment
+        //if necessary.
+        while (timer > speed && !hooked) {
+            timer -= speed;
 
-			index += 1;
+            index += 1;
 
-			if (index >= points.size())
-				index = 0;
-		}
+            if (index >= points.size())
+                index = 0;
+        }
 
-		float time = timer / speed;
+        float time = timer / speed;
 
-		// Neither Catmull nor Bezier make sense with less than 4 points.
-		if (points.size() < 4)
-		{
-			return;
-		}
+        if (points.size() == 2) {
+            if (time > 0.98) {
+                hooked = true;
+            }
+            glm::vec3 lerpCoords((points[1] * time) + points[0] * (1 - time));
+            GetGameObject()->SetPostion(lerpCoords);
 
-		glm::vec3 p0, p1, p2, p3;
-		int p0_index, p1_index, p2_index, p3_index;
+        }
 
-		//lerp stuff
-		p1_index = index;
-		p0_index = (p1_index == 0) ? points.size() - 1 : p1_index - 1;
-		p2_index = (p1_index + 1) % points.size();
-		p3_index = (p2_index + 1) % points.size();
+        // Neither Catmull nor Bezier make sense with less than 4 points.
+        if (points.size() < 4) {
+            return;
+        }
 
-		p0 = points[p0_index];
-		p1 = points[p1_index];
-		p2 = points[p2_index];
-		p3 = points[p3_index];
+        glm::vec3 p0, p1, p2, p3;
+        int p0_index, p1_index, p2_index, p3_index;
 
-		GetGameObject()->SetPostion(Catmull(p0, p1, p2, p3, time));
-		GetGameObject()->LookAt(p1);
+        //lerp stuff
+        p1_index = index;
+        p0_index = (p1_index == 0) ? points.size() - 1 : p1_index - 1;
+        p2_index = (p1_index + 1) % points.size();
+        p3_index = (p2_index + 1) % points.size();
 
-	if (GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasFinished && !lured
-		&& abs(GetGameObject()->GetPosition().x - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().x) <= 5
-		&& abs(GetGameObject()->GetPosition().y - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().y) <= 5) {
-		std::vector<glm::vec3> caughtPoints;
-		caughtPoints.push_back(GetGameObject()->GetPosition());
-		caughtPoints.push_back(GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition());
-		SetPoints(caughtPoints);
-		lured = true;
-	}
-	if(!hooked) timer += deltaTime;
-	//Ensure we are not "over time" and move to the next segment
-	//if necessary.	
-	while (timer > speed && !hooked) {
-		timer -= speed;
+        p0 = points[p0_index];
+        p1 = points[p1_index];
+        p2 = points[p2_index];
+        p3 = points[p3_index];
 
-		index += 1;
+        GetGameObject()->SetPostion(Catmull(p0, p1, p2, p3, time));
+        GetGameObject()->LookAt(p1);
 
-		if (index >= points.size())
-			index = 0;
-	}
-
-	float time = timer / speed;
-
-	if (points.size() == 2) {
-		if (time > 0.98) {
-			hooked = true;
-		}
-		glm::vec3 lerpCoords((points[1] * time) + points[0] * (1 - time));
-		GetGameObject()->SetPostion(lerpCoords);
-
-	}
-
-	// Neither Catmull nor Bezier make sense with less than 4 points.
-	if (points.size() < 4) {
-		return;
 	}
 }
 
