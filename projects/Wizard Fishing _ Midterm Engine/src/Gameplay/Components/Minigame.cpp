@@ -8,7 +8,6 @@
 #include "Gameplay/Scene.h"
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
-#include <Gameplay/Components/FishMovement.h>
 
 Minigame::Minigame() :
 	IComponent(),
@@ -38,9 +37,6 @@ void Minigame::Update(float deltaTime)
 		}
 
 		if (minigameActive == true) {
-			if (GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->hooked) {
-				minigameActive = true;
-			}
 
 			//my head + how far from my head + cos theta
 			middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));

@@ -15,8 +15,6 @@ public:
 
 	float timer, speed;
 
-	bool lured, hooked;
-
 	int index;
 
 	virtual void Update(float deltaTime) override;

@@ -2,10 +2,9 @@
 
 #include "Gameplay/GameObject.h"
 
-#include "Gameplay/Scene.h"
-#include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
-#include <Gameplay/Components/Casting.h>
+#include "Utils/JsonGlmHelpers.h"
+
 
 FishMovement::FishMovement() {
 	timer = 0.0f;
@@ -14,8 +13,6 @@ FishMovement::FishMovement() {
 	//y bounds -10, 30
 	//z bounds 1, -10
 	points.push_back(glm::vec3(23, -50, 0));
-	lured = false;
-	hooked = false;
 	for (int i = 0; i < 14; i++) {
 	float x = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40)));
 	float y = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30 - (-10))));
@@ -65,42 +62,6 @@ void FishMovement::Update(float deltaTime) {
 
 		GetGameObject()->SetPostion(Catmull(p0, p1, p2, p3, time));
 		GetGameObject()->LookAt(p1);
-
-	if (GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasFinished && !lured
-		&& abs(GetGameObject()->GetPosition().x - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().x) <= 5
-		&& abs(GetGameObject()->GetPosition().y - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().y) <= 5) {
-		std::vector<glm::vec3> caughtPoints;
-		caughtPoints.push_back(GetGameObject()->GetPosition());
-		caughtPoints.push_back(GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition());
-		SetPoints(caughtPoints);
-		lured = true;
-	}
-	if(!hooked) timer += deltaTime;
-	//Ensure we are not "over time" and move to the next segment
-	//if necessary.	
-	while (timer > speed && !hooked) {
-		timer -= speed;
-
-		index += 1;
-
-		if (index >= points.size())
-			index = 0;
-	}
-
-	float time = timer / speed;
-
-	if (points.size() == 2) {
-		if (time > 0.98) {
-			hooked = true;
-		}
-		glm::vec3 lerpCoords((points[1] * time) + points[0] * (1 - time));
-		GetGameObject()->SetPostion(lerpCoords);
-
-	}
-
-	// Neither Catmull nor Bezier make sense with less than 4 points.
-	if (points.size() < 4) {
-		return;
 	}
 }
 
