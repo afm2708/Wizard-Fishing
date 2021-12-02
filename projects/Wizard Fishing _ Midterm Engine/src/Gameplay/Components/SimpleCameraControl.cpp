@@ -25,61 +25,65 @@ void SimpleCameraControl::Awake() {
 
 void SimpleCameraControl::Update(float deltaTime)
 {
-	if (glfwGetMouseButton(_window, 0)) {
-		if (_isMousePressed == false) {
-			glfwGetCursorPos(_window, &_prevMousePos.x, &_prevMousePos.y);
+	if (!(SimpleCameraControl::pause->isPaused))
+	{
+		if (glfwGetMouseButton(_window, 0)) {
+			if (_isMousePressed == false) {
+				glfwGetCursorPos(_window, &_prevMousePos.x, &_prevMousePos.y);
+			}
+			_isMousePressed = true;
 		}
-		_isMousePressed = true;
-	} else {
-		_isMousePressed = false;
-	}
-
-	glm::dvec2 currentMousePos;
-	glfwGetCursorPos(_window, &currentMousePos.x, &currentMousePos.y);
-
-	if (_isMousePressed) {
-
-
-		_currentRot.x += static_cast<float>(currentMousePos.x - _prevMousePos.x) * _mouseSensitivity.x;
-		_currentRot.y += static_cast<float>(currentMousePos.y - _prevMousePos.y) * _mouseSensitivity.y;
-		glm::quat rotX = glm::angleAxis(glm::radians(_currentRot.x), glm::vec3(0, 0, 1));
-		glm::quat rotY = glm::angleAxis(glm::radians(_currentRot.y), glm::vec3(1, 0, 0));
-		glm::quat currentRot = rotX * rotY;
-		GetGameObject()->SetRotation(currentRot);
-
-		_prevMousePos = currentMousePos;
-
-		glm::vec3 input = glm::vec3(0.0f);
-		if (glfwGetKey(_window, GLFW_KEY_W)) {
-			input.z -= _moveSpeeds.x;
-		}
-		if (glfwGetKey(_window, GLFW_KEY_S)) {
-			input.z += _moveSpeeds.x;
-		}
-		if (glfwGetKey(_window, GLFW_KEY_A)) {
-			input.x -= _moveSpeeds.y;
-		}
-		if (glfwGetKey(_window, GLFW_KEY_D)) {
-			input.x += _moveSpeeds.y;
-		}
-		if (glfwGetKey(_window, GLFW_KEY_LEFT_CONTROL)) {
-			input.y -= _moveSpeeds.z;
+		else {
+			_isMousePressed = false;
 		}
 
-		
-		if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT)) {
-			input *= _shiftMultipler;
-		}
+		glm::dvec2 currentMousePos;
+		glfwGetCursorPos(_window, &currentMousePos.x, &currentMousePos.y);
 
-		input *= deltaTime;
+		if (_isMousePressed) {
 
-		glm::vec3 worldMovement = currentRot * glm::vec4(input, 1.0f);
-		GetGameObject()->SetPostion(GetGameObject()->GetPosition() + worldMovement);
-		if (GetGameObject()->GetPosition().z != 4) {
-			GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, 4.0f));
+
+			_currentRot.x += static_cast<float>(currentMousePos.x - _prevMousePos.x) * _mouseSensitivity.x;
+			_currentRot.y += static_cast<float>(currentMousePos.y - _prevMousePos.y) * _mouseSensitivity.y;
+			glm::quat rotX = glm::angleAxis(glm::radians(_currentRot.x), glm::vec3(0, 0, 1));
+			glm::quat rotY = glm::angleAxis(glm::radians(_currentRot.y), glm::vec3(1, 0, 0));
+			glm::quat currentRot = rotX * rotY;
+			GetGameObject()->SetRotation(currentRot);
+
+			_prevMousePos = currentMousePos;
+
+			glm::vec3 input = glm::vec3(0.0f);
+			if (glfwGetKey(_window, GLFW_KEY_W)) {
+				input.z -= _moveSpeeds.x;
+			}
+			if (glfwGetKey(_window, GLFW_KEY_S)) {
+				input.z += _moveSpeeds.x;
+			}
+			if (glfwGetKey(_window, GLFW_KEY_A)) {
+				input.x -= _moveSpeeds.y;
+			}
+			if (glfwGetKey(_window, GLFW_KEY_D)) {
+				input.x += _moveSpeeds.y;
+			}
+			if (glfwGetKey(_window, GLFW_KEY_LEFT_CONTROL)) {
+				input.y -= _moveSpeeds.z;
+			}
+
+
+			if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT)) {
+				input *= _shiftMultipler;
+			}
+
+			input *= deltaTime;
+
+			glm::vec3 worldMovement = currentRot * glm::vec4(input, 1.0f);
+			GetGameObject()->SetPostion(GetGameObject()->GetPosition() + worldMovement);
+			if (GetGameObject()->GetPosition().z != 4) {
+				GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, 4.0f));
+			}
+			player->GetGameObject()->SetPostion(GetGameObject()->GetPosition());
+			player->GetGameObject()->SetRotation(GetGameObject()->GetRotation());
 		}
-		player->GetGameObject()->SetPostion(GetGameObject()->GetPosition());
-		player->GetGameObject()->SetRotation(GetGameObject()->GetRotation());
 	}
 }
 

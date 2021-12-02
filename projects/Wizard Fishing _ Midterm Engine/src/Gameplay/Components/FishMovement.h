@@ -1,5 +1,6 @@
 #pragma once
 #include "IComponent.h"
+#include "PauseBehaviour.h"
 
 /// <summary>
 /// movement component for fish
@@ -13,6 +14,8 @@ public:
 	std::vector<glm::vec3> points;
 
 	float timer, speed;
+
+	bool lured, hooked;
 
 	int index;
 
@@ -33,6 +36,7 @@ public:
 
 	virtual nlohmann::json ToJson() const override;
 	static std::shared_ptr<FishMovement> FromJson(const nlohmann::json&);
+	PauseBehaviour::Sptr pause;
 
 	MAKE_TYPENAME(FishMovement)
 };
