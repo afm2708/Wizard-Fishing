@@ -610,7 +610,7 @@ int main() {
 			Bobber->Get<Casting>()->target = target->Get<TargetComponent>();
 		}
 
-		GameObject::Sptr monkey1 = scene->CreateGameObject("Monkey 1");
+		/*GameObject::Sptr monkey1 = scene->CreateGameObject("Monkey 1");
 		{
 			// Set position in the scene
 			monkey1->SetPostion(glm::vec3(1.5f, 0.0f, 1.0f));
@@ -632,7 +632,7 @@ int main() {
 			MaterialSwapBehaviour::Sptr triggerInteraction = monkey1->Add<MaterialSwapBehaviour>();
 			triggerInteraction->EnterMaterial = boxMaterial;
 			triggerInteraction->ExitMaterial = monkeyMaterial;
-		}
+		}*/
 
 		GameObject::Sptr Fish = scene->CreateGameObject("Fish");
 		{
@@ -652,13 +652,13 @@ int main() {
 
 
 		// Create a trigger volume for testing how we can detect collisions with objects!
-		GameObject::Sptr trigger = scene->CreateGameObject("Trigger"); 
+		/*GameObject::Sptr trigger = scene->CreateGameObject("Trigger");
 		{
 			TriggerVolume::Sptr volume = trigger->Add<TriggerVolume>();
 			BoxCollider::Sptr collider = BoxCollider::Create(glm::vec3(3.0f, 3.0f, 1.0f));
 			collider->SetPosition(glm::vec3(0.0f, 0.0f, 0.5f));
 			volume->AddCollider(collider);
-		}
+		}*/
 
 		GameObject::Sptr wizardTent = scene->CreateGameObject("Wizard Tent");
 		{
@@ -685,6 +685,56 @@ int main() {
 			renderer->SetMesh(dockMesh);
 			renderer->SetMaterial(dockMaterial);
 
+		}
+
+		GameObject::Sptr tabletop = scene->CreateGameObject("Tabletop");
+		{
+			tabletop->SetScale(glm::vec3(0.5f));
+			tabletop->SetPostion(glm::vec3(-34, 50, -1));
+
+			RenderComponent::Sptr renderer = tabletop->Add<RenderComponent>();
+			renderer->SetMesh(tableTopMesh);
+			renderer->SetMaterial(tableTopMaterial);
+		}
+
+		GameObject::Sptr tableleg1 = scene->CreateGameObject("Table Leg 1");
+		{
+			tableleg1->SetScale(glm::vec3(0.5f));
+			tableleg1->SetPostion(glm::vec3(-34, 50, -1));
+
+			RenderComponent::Sptr renderer = tableleg1->Add<RenderComponent>();
+			renderer->SetMesh(tableLeg1Mesh);
+			renderer->SetMaterial(tableLegMaterial);
+		}
+
+		GameObject::Sptr tableleg2 = scene->CreateGameObject("Table Leg 2");
+		{
+			tableleg2->SetScale(glm::vec3(0.5f));
+			tableleg2->SetPostion(glm::vec3(-38.5, 50, -1));
+
+			RenderComponent::Sptr renderer = tableleg2->Add<RenderComponent>();
+			renderer->SetMesh(tableLeg1Mesh);
+			renderer->SetMaterial(tableLegMaterial);
+		}
+
+		GameObject::Sptr tableleg3 = scene->CreateGameObject("Table Leg 3");
+		{
+			tableleg3->SetScale(glm::vec3(0.5f));
+			tableleg3->SetPostion(glm::vec3(-34, 48, -1));
+
+			RenderComponent::Sptr renderer = tableleg3->Add<RenderComponent>();
+			renderer->SetMesh(tableLeg1Mesh);
+			renderer->SetMaterial(tableLegMaterial);
+		}
+
+		GameObject::Sptr tableleg4 = scene->CreateGameObject("Table Leg 4");
+		{
+			tableleg4->SetScale(glm::vec3(0.5f));
+			tableleg4->SetPostion(glm::vec3(-38.5, 50, -1));
+
+			RenderComponent::Sptr renderer = tableleg4->Add<RenderComponent>();
+			renderer->SetMesh(tableLeg2Mesh);
+			renderer->SetMaterial(tableLegMaterial);
 		}
 
 		// Save the asset manifest for all the resources we just loaded
