@@ -7,6 +7,7 @@
 #include "Gameplay/Scene.h"
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
+#include <Gameplay/Components/Casting.h>
 
 TargetComponent::TargetComponent() :
 	IComponent(),
@@ -85,6 +86,18 @@ void TargetComponent::Update(float deltaTime)
 				fishing = false;
 				GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, 0.0f));
 			}
+
+		glm::vec3 worldMovement = currentRot * glm::vec4(input, 1.0f);
+		GetGameObject()->SetPostion(GetGameObject()->GetPosition() + worldMovement);
+		if (GetGameObject()->GetPosition().z != 0 && !fishing) {
+			GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, 0.0f));
+		}
+		if (GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasFinished) {
+			fishing = true;
+			GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, -22.0f));
+		}
+		if (glfwGetKey(_window, GLFW_KEY_E)) {
+			fishing = false;
 		}
 	}
 }
