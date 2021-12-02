@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 
 void WizardMovement::Update(float deltaTime) {
-	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_W) == GLFW_PRESS) {
+/*	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_W) == GLFW_PRESS) {
 
 		GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y + speed * deltaTime, 0.0f));
 	}
@@ -28,7 +28,7 @@ void WizardMovement::Update(float deltaTime) {
 
 		GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x - speed * deltaTime, GetGameObject()->GetPosition().y, 0.0f));
 		
-	}
+	}*/
 
 }
 

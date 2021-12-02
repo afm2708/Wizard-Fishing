@@ -6,6 +6,8 @@
 #include "Utils/ImGuiHelper.h"
 #include "Utils/JsonGlmHelpers.h"
 #include <GLFW/glfw3.h>
+#include <Gameplay/Components/Minigame.h>
+#include <Gameplay/Components/FishMovement.h>
 
 Casting::Casting() {
 	timer = 0.0f;
@@ -53,12 +55,14 @@ void Casting::Update(float deltaTime) {
 	{
 		hasCast = true;
 		SetTarget(GetGameObject()->GetScene()->FindObjectByName("Target")->GetPosition());
+		GetGameObject()->GetScene()->FindObjectByName("Target")->Get<TargetComponent>()->fishing = true;
 	}
 
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
 	{
 		hasFinished = false;
 		hasCast = false;
+		GetGameObject()->GetScene()->FindObjectByName("Target")->SetPostion(glm::vec3(0, 0, 0));
 	}
 	
 	if (hasCast && !hasFinished)

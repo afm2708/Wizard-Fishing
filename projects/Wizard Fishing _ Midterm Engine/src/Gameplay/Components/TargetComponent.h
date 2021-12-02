@@ -25,7 +25,7 @@ public:
 	virtual nlohmann::json ToJson() const override;
 	static TargetComponent::Sptr FromJson(const nlohmann::json& blob);
 	PauseBehaviour::Sptr pause;
-
+	bool fishing = false;
 
 protected:
 	float _shiftMultipler;
@@ -35,7 +35,5 @@ protected:
 	glm::dvec2 _prevMousePos;
 	glm::vec2 _currentRot;
 
-	bool _isMousePressed = false;
-	bool fishing = false;
 	GLFWwindow* _window;
 };

@@ -6,20 +6,21 @@
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
 #include <Gameplay/Components/Casting.h>
+#include <Gameplay/Components/Minigame.h>
 
 FishMovement::FishMovement() {
 	timer = 0.0f;
 	index = 0;
 	//x bounds 0, 40
 	//y bounds -10, 30
-	//z bounds 1, -10
-	points.push_back(glm::vec3(23, -50, 0));
+	//z bounds -1, -10
+	points.push_back(glm::vec3(23, -50, -1));
 	lured = false;
 	hooked = false;
 	for (int i = 0; i < 14; i++) {
 	float x = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40)));
 	float y = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30 - (-10))));
-	float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 + 10)));
+	float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (-1 + 10)));
 	points.push_back(glm::vec3(x, y, z));
 	}
 
@@ -28,9 +29,25 @@ FishMovement::FishMovement() {
 void FishMovement::Update(float deltaTime) {
 	if (!(FishMovement::pause->isPaused))
 	{
+        if (hooked && !GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->minigameActive) {
+            hooked = false;
+            lured = false;
+            points.pop_back();
+            points.pop_back();
+            points.push_back(glm::vec3(23, -50, -1));
+            for (int i = 0; i < 14; i++) {
+                float x = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40)));
+                float y = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30 - (-10))));
+                float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 + 10)));
+                points.push_back(glm::vec3(x, y, z));
+            }
+            index = 0;
+            timer = 0;
+            GetGameObject()->SetPostion(points[0]);
+        }
         if (GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasFinished && !lured
-            && abs(GetGameObject()->GetPosition().x - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().x) <= 5
-            && abs(GetGameObject()->GetPosition().y - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().y) <= 5) {
+            && abs(GetGameObject()->GetPosition().x - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().x) <= 6
+            && abs(GetGameObject()->GetPosition().y - GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition().y) <= 6) {
             std::vector<glm::vec3> caughtPoints;
             caughtPoints.push_back(GetGameObject()->GetPosition());
             caughtPoints.push_back(GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition());

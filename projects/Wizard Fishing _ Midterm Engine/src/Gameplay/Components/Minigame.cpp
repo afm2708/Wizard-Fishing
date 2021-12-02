@@ -9,6 +9,7 @@
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
 #include <Gameplay/Components/FishMovement.h>
+#include <Gameplay/Components/Casting.h>
 
 Minigame::Minigame() :
 	IComponent(),
@@ -62,9 +63,12 @@ void Minigame::Update(float deltaTime)
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
             moveX = 0.0f;
         }
-        if (glfwGetMouseButton(_window, 0) && flip >= 17.0f && flip <= 23.0f) {
+        if (glfwGetKey(_window, GLFW_KEY_SPACE) && flip >= 17.0f && flip <= 23.0f) {
             minigameActive = false;
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
+            GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasCast = false;
+            GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasFinished = false;
+            GetGameObject()->GetScene()->FindObjectByName("Bobber")->SetPostion(GetGameObject()->GetScene()->FindObjectByName("Main Camera")->GetPosition());
             moveX = 0.0f;
             moveY = 0.0f;
         }

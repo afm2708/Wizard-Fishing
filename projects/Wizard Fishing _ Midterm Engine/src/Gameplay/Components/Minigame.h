@@ -21,6 +21,8 @@ public:
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
+	bool minigameActive = false;
+
 
 public:
 	virtual void RenderImGui() override;
@@ -39,7 +41,6 @@ protected:
 	float middleY;
 	float flip;
 
-	bool minigameActive = false;
 	GLFWwindow* _window;
 };
 
