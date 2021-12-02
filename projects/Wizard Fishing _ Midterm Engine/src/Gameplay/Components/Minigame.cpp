@@ -29,43 +29,45 @@ void Minigame::Awake() {
 
 void Minigame::Update(float deltaTime)
 {
+	if (!(Minigame::pause->isPaused))
+	{
 
-
-	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		minigameActive = true;
-	}
-
-	if (minigameActive == true) {
-
-		//my head + how far from my head + cos theta
-		middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f/ 180.0f)));
-		//my head + how far from my head + sin theta
-		middleY = cameraCords->GetGameObject()->GetPosition().y + 2.0f * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-
-		flip += 1.0f;
-
-		if (flip >= 40.0f) {
-			moveSpeedX = -moveSpeedX;
-			moveSpeedY = -moveSpeedY;
-			flip = 0.0f;
+		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			minigameActive = true;
 		}
 
-		moveX += moveSpeedX * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-		moveY += moveSpeedY * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+		if (minigameActive == true) {
 
-		GetGameObject()->SetRotation(glm::vec3(90.0f, 0, cameraCords->GetGameObject()->GetRotationEuler().z));
-		GetGameObject()->SetPostion(glm::vec3(middleX + moveX, middleY + moveY, 4.0f));
-	}
+			//my head + how far from my head + cos theta
+			middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+			//my head + how far from my head + sin theta
+			middleY = cameraCords->GetGameObject()->GetPosition().y + 2.0f * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
 
-	else {
-		GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
-		moveX = 0.0f;
-	}
-	if (glfwGetMouseButton(_window, 0) && flip >= 17.0f && flip <= 23.0f) {
-		minigameActive = false;
-		GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
-		moveX = 0.0f;
-		moveY =0.0f;
+			flip += 1.0f;
+
+			if (flip >= 40.0f) {
+				moveSpeedX = -moveSpeedX;
+				moveSpeedY = -moveSpeedY;
+				flip = 0.0f;
+			}
+
+			moveX += moveSpeedX * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+			moveY += moveSpeedY * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+
+			GetGameObject()->SetRotation(glm::vec3(90.0f, 0, cameraCords->GetGameObject()->GetRotationEuler().z));
+			GetGameObject()->SetPostion(glm::vec3(middleX + moveX, middleY + moveY, 4.0f));
+		}
+
+		else {
+			GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
+			moveX = 0.0f;
+		}
+		if (glfwGetMouseButton(_window, 0) && flip >= 17.0f && flip <= 23.0f) {
+			minigameActive = false;
+			GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
+			moveX = 0.0f;
+			moveY = 0.0f;
+		}
 	}
 }
 

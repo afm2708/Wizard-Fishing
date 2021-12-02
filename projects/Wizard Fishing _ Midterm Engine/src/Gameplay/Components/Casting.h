@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include "Gameplay/Components/TargetComponent.h"
+#include "PauseBehaviour.h"
 
 class Casting : public Gameplay::IComponent {
 public:
@@ -21,6 +22,7 @@ public:
 		return (1-t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
 	}
 
+	PauseBehaviour::Sptr pause;
 	TargetComponent::Sptr target;
 	virtual void RenderImGui() override;
 

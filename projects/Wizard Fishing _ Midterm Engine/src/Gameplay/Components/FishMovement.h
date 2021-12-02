@@ -1,5 +1,6 @@
 #pragma once
 #include "IComponent.h"
+#include "PauseBehaviour.h"
 
 /// <summary>
 /// movement component for fish
@@ -33,6 +34,7 @@ public:
 
 	virtual nlohmann::json ToJson() const override;
 	static std::shared_ptr<FishMovement> FromJson(const nlohmann::json&);
+	PauseBehaviour::Sptr pause;
 
 	MAKE_TYPENAME(FishMovement)
 };

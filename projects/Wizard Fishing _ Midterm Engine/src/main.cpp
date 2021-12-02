@@ -57,6 +57,7 @@
 #include "Gameplay/Components/TargetComponent.h"
 #include "Gameplay/Components/TerrainRender.h"
 #include "Gameplay/Components/Casting.h"
+#include "Gameplay/Components/PauseBehaviour.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -256,6 +257,7 @@ int main() {
 	ComponentManager::RegisterType<Minigame>();
 	ComponentManager::RegisterType<TargetComponent>();
 	ComponentManager::RegisterType<Casting>();
+	ComponentManager::RegisterType<PauseBehaviour>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);

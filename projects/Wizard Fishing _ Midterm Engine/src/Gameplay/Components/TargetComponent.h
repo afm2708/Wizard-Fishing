@@ -1,5 +1,6 @@
 #pragma once
 #include "IComponent.h"
+#include "PauseBehaviour.h"
 
 struct GLFWwindow;
 
@@ -23,6 +24,7 @@ public:
 	MAKE_TYPENAME(TargetComponent);
 	virtual nlohmann::json ToJson() const override;
 	static TargetComponent::Sptr FromJson(const nlohmann::json& blob);
+	PauseBehaviour::Sptr pause;
 
 
 protected:

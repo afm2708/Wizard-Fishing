@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include "WizardMovement.h"
+#include "PauseBehaviour.h"
 
 struct GLFWwindow;
 
@@ -25,6 +26,7 @@ public:
 	MAKE_TYPENAME(SimpleCameraControl);
 	virtual nlohmann::json ToJson() const override;
 	static SimpleCameraControl::Sptr FromJson(const nlohmann::json& blob);
+	PauseBehaviour::Sptr pause;
 
 
 protected:

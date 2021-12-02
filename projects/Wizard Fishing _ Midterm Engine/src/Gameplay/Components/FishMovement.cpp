@@ -23,43 +23,46 @@ FishMovement::FishMovement() {
 }
 
 void FishMovement::Update(float deltaTime) {
-	timer += deltaTime;
-	//Ensure we are not "over time" and move to the next segment
-	//if necessary.
-	while (timer > speed)
+	if (!(FishMovement::pause->isPaused))
 	{
-		timer -= speed;
+		timer += deltaTime;
+		//Ensure we are not "over time" and move to the next segment
+		//if necessary.
+		while (timer > speed)
+		{
+			timer -= speed;
 
-		index += 1;
+			index += 1;
 
-		if (index >= points.size())
-			index = 0;
+			if (index >= points.size())
+				index = 0;
+		}
+
+		float time = timer / speed;
+
+		// Neither Catmull nor Bezier make sense with less than 4 points.
+		if (points.size() < 4)
+		{
+			return;
+		}
+
+		glm::vec3 p0, p1, p2, p3;
+		int p0_index, p1_index, p2_index, p3_index;
+
+		//lerp stuff
+		p1_index = index;
+		p0_index = (p1_index == 0) ? points.size() - 1 : p1_index - 1;
+		p2_index = (p1_index + 1) % points.size();
+		p3_index = (p2_index + 1) % points.size();
+
+		p0 = points[p0_index];
+		p1 = points[p1_index];
+		p2 = points[p2_index];
+		p3 = points[p3_index];
+
+		GetGameObject()->SetPostion(Catmull(p0, p1, p2, p3, time));
+		GetGameObject()->LookAt(p1);
 	}
-
-	float time = timer / speed;
-
-	// Neither Catmull nor Bezier make sense with less than 4 points.
-	if (points.size() < 4)
-	{
-		return;
-	}
-
-	glm::vec3 p0, p1, p2, p3;
-	int p0_index, p1_index, p2_index, p3_index;
-
-	//lerp stuff
-	p1_index = index;
-	p0_index = (p1_index == 0) ? points.size() - 1 : p1_index - 1;
-	p2_index = (p1_index + 1) % points.size();
-	p3_index = (p2_index + 1) % points.size();
-
-	p0 = points[p0_index];
-	p1 = points[p1_index];
-	p2 = points[p2_index];
-	p3 = points[p3_index];
-
-	GetGameObject()->SetPostion(Catmull(p0, p1, p2, p3, time));
-	GetGameObject()->LookAt(p1);
 }
 
 void FishMovement::RenderImGui() {
