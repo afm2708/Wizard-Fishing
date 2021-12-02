@@ -15,6 +15,7 @@ FishMovement::FishMovement() {
 	//y bounds -10, 30
 	//z bounds -1, -10
 	points.push_back(glm::vec3(23, -50, -1));
+    points.push_back(glm::vec3(23, -24, -1));
 	lured = false;
 	hooked = false;
 	for (int i = 0; i < 14; i++) {
@@ -23,7 +24,7 @@ FishMovement::FishMovement() {
 	float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (-1 + 10)));
 	points.push_back(glm::vec3(x, y, z));
 	}
-
+    points.push_back(glm::vec3(23, -24, -1));
 }
 
 void FishMovement::Update(float deltaTime) {
@@ -35,12 +36,14 @@ void FishMovement::Update(float deltaTime) {
             points.pop_back();
             points.pop_back();
             points.push_back(glm::vec3(23, -50, -1));
+            points.push_back(glm::vec3(23, -24, -1));
             for (int i = 0; i < 14; i++) {
                 float x = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40)));
                 float y = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30 - (-10))));
                 float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 + 10)));
                 points.push_back(glm::vec3(x, y, z));
             }
+            points.push_back(glm::vec3(23, -24, -1));
             index = 0;
             timer = 0;
             GetGameObject()->SetPostion(points[0]);
