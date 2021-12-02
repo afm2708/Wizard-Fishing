@@ -283,7 +283,10 @@ int main() {
 		Texture2D::Sptr    boxTex = ResourceManager::CreateAsset<Texture2D>("Textures/BoxTex.png");
 
 		MeshResource::Sptr bridgeMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Bridge.obj");
-		//Texture2D::Sptr	   bridgeTex = ResourceManager::CreateAsset<Texture2D>("Textures/BridgeTex.png");
+		Texture2D::Sptr	   bridgeTex = ResourceManager::CreateAsset<Texture2D>("Textures/BridgeTex.png");
+
+		MeshResource::Sptr dockMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Dock.obj");
+		Texture2D::Sptr	   dockTex = ResourceManager::CreateAsset<Texture2D>("Textures/DockTex.png");
 
 		MeshResource::Sptr fishMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Fish.obj");
 		Texture2D::Sptr	   fishTex = ResourceManager::CreateAsset<Texture2D>("Textures/FishTex.png");
@@ -300,14 +303,24 @@ int main() {
 		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Monkey.obj");
 		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/MonkeyTex.png");
 
+		MeshResource::Sptr staffMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Staff.obj");
+		Texture2D::Sptr    staffTex = ResourceManager::CreateAsset<Texture2D>("Textures/StaffTex.png");
+
+		MeshResource::Sptr tableLeg1Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/TableLeg1.obj");
+		MeshResource::Sptr tableLeg2Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/TableLeg2.obj");
+		Texture2D::Sptr    tableLegTex = ResourceManager::CreateAsset<Texture2D>("Textures/TableLegTex.png");
+
+		MeshResource::Sptr tableTopMesh = ResourceManager::CreateAsset<MeshResource>("Objects/TableTop.obj");
+		Texture2D::Sptr    tableTopTex = ResourceManager::CreateAsset<Texture2D>("Textures/TableTopTex.png");
+
 		MeshResource::Sptr targetMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Target.obj");
 		Texture2D::Sptr    targetTex = ResourceManager::CreateAsset<Texture2D>("Textures/TargetTex.png");
-		
 
 		MeshResource::Sptr wizardMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard.obj");
-		//Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTex.png");
+		//Texture2D::Sptr    wizardTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTex.png");
 
-	
+		MeshResource::Sptr wizardTentMesh = ResourceManager::CreateAsset<MeshResource>("Objects/WizardTent.obj");
+		Texture2D::Sptr    wizardTentTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTentTex.png");
 
 		// Create an empty scene
 		scene = std::make_shared<Scene>();
@@ -332,13 +345,21 @@ int main() {
 			boxMaterial->Shininess = 2.0f;
 		}
 
-		/*Material::Sptr bridgeMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr bridgeMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			bridgeMaterial->Name = "Bridge";
 			bridgeMaterial->MatShader = scene->BaseShader;
 			bridgeMaterial->Texture = bridgeTex;
 			bridgeMaterial->Shininess = 2.0f;
-		}*/
+		}
+
+		Material::Sptr dockMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			dockMaterial->Name = "Dock";
+			dockMaterial->MatShader = scene->BaseShader;
+			dockMaterial->Texture = dockTex;
+			dockMaterial->Shininess = 2.0f;
+		}
 
 		Material::Sptr fishMaterial = ResourceManager::CreateAsset<Material>();
 		{
@@ -346,7 +367,6 @@ int main() {
 			fishMaterial->MatShader = scene->BaseShader;
 			fishMaterial->Texture = fishTex;
 			fishMaterial->Shininess = 256.0f;
-
 		}
 
 		Material::Sptr grassMaterial = ResourceManager::CreateAsset<Material>();
@@ -355,16 +375,14 @@ int main() {
 			grassMaterial->MatShader = scene->BaseShader;
 			grassMaterial->Texture = grassTexture;
 			grassMaterial->Shininess = 256.0f;
-
 		}
 
 		Material::Sptr lakeBottomMaterial = ResourceManager::CreateAsset<Material>();
 		{
-			lakeBottomMaterial->Name = "Lake";
+			lakeBottomMaterial->Name = "Lake Bottom";
 			lakeBottomMaterial->MatShader = scene->BaseShader;
 			lakeBottomMaterial->Texture = lakeBottomTexture;
 			lakeBottomMaterial->Shininess = 256.0f;
-
 		}
 
 		Material::Sptr minigamePointerMaterial = ResourceManager::CreateAsset<Material>();
@@ -373,7 +391,6 @@ int main() {
 			minigamePointerMaterial->MatShader = scene->BaseShader;
 			minigamePointerMaterial->Texture = minigamePointerTex;
 			minigamePointerMaterial->Shininess = 256.0f;
-
 		}
 
 		Material::Sptr monkeyMaterial = ResourceManager::CreateAsset<Material>();
@@ -382,7 +399,30 @@ int main() {
 			monkeyMaterial->MatShader = scene->BaseShader;
 			monkeyMaterial->Texture = monkeyTex;
 			monkeyMaterial->Shininess = 256.0f;
+		}
 
+		Material::Sptr staffMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			staffMaterial->Name = "Staff";
+			staffMaterial->MatShader = scene->BaseShader;
+			staffMaterial->Texture = staffTex;
+			staffMaterial->Shininess = 256.0f;
+		}
+
+		Material::Sptr tableLegMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			tableLegMaterial->Name = "Table Leg";
+			tableLegMaterial->MatShader = scene->BaseShader;
+			tableLegMaterial->Texture = staffTex;
+			tableLegMaterial->Shininess = 256.0f;
+		}
+
+		Material::Sptr tableTopMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			tableTopMaterial->Name = "Table Top";
+			tableTopMaterial->MatShader = scene->BaseShader;
+			tableTopMaterial->Texture = staffTex;
+			tableTopMaterial->Shininess = 256.0f;
 		}
 
 		Material::Sptr targetMaterial = ResourceManager::CreateAsset<Material>();
@@ -391,23 +431,37 @@ int main() {
 			targetMaterial->MatShader = scene->BaseShader;
 			targetMaterial->Texture = targetTex;
 			targetMaterial->Shininess = 256.0f;
+		}
 
+		Material::Sptr wizardTentMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			wizardTentMaterial->Name = "Wizard Tent";
+			wizardTentMaterial->MatShader = scene->BaseShader;
+			wizardTentMaterial->Texture = wizardTentTex;
+			wizardTentMaterial->Shininess = 256.0f;
 		}
 
 		// Create some lights for our scene
-		scene->Lights.resize(3);
-		scene->Lights[0].Position = glm::vec3(0.0f, 1.0f, 50.0f);
+		scene->Lights.resize(5);
+		scene->Lights[0].Position = glm::vec3(5.0f, -5.0f, 50.0f);
 		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[0].Range = 100000.0f;
+		scene->Lights[0].Range = 2500.0f;
 
-		/*scene->Lights[1].Position = glm::vec3(1.0f, 0.0f, 3.0f);
-		scene->Lights[1].Color = glm::vec3(0.2f, 0.8f, 0.1f);
+		scene->Lights[1].Position = glm::vec3(5.0f, 25.0f, 50.0f);
+		scene->Lights[1].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[1].Range = 2500.0f;
 
-		scene->Lights[2].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		scene->Lights[2].Color = glm::vec3(1.0f, 0.2f, 0.1f);*/
+		scene->Lights[2].Position = glm::vec3(35.0f, -5.0f, 50.0f);
+		scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[2].Range = 2500.0f;
 
+		scene->Lights[3].Position = glm::vec3(35.0f, 25.0f, 50.0f);
+		scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[3].Range = 2500.0f;
 
-
+		scene->Lights[4].Position = glm::vec3(55.0f, 45.0f, 50.0f);
+		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[4].Range = 3000.0f;
 
 		// We'll create a mesh that is a simple plane that we can resize later
 		MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<MeshResource>();
@@ -415,7 +469,7 @@ int main() {
 		planeMesh->GenerateMesh();
 
 
-		// Wizard/ log
+		//Wizard model is currently a log
 		GameObject::Sptr wizard = scene->CreateGameObject("Wizard");
 		{
 			// Scale up the plane
@@ -502,7 +556,7 @@ int main() {
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = bridge->Add<RenderComponent>();
 			renderer->SetMesh(bridgeMesh);
-			renderer->SetMaterial(boxMaterial);
+			renderer->SetMaterial(bridgeMaterial);
 
 		}
 
@@ -582,13 +636,39 @@ int main() {
 			volume->AddCollider(collider);
 		}
 
+		GameObject::Sptr wizardTent = scene->CreateGameObject("Wizard Tent");
+		{
+			// Scale up the plane
+			wizardTent->SetPostion(glm::vec3(0.0, 0.0,-0.370));
+			wizardTent->SetScale(glm::vec3(0.5F));
+			wizardTent->SetRotation(glm::vec3(0, 0, 90));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = wizardTent->Add<RenderComponent>();
+			renderer->SetMesh(wizardTentMesh);
+			renderer->SetMaterial(wizardTentMaterial);
+
+		}
+
+		GameObject::Sptr dock = scene->CreateGameObject("Dock");
+		{
+			// Scale up the plane
+			dock->SetScale(glm::vec3(0.5F));
+			dock->SetRotation(glm::vec3(90, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = dock->Add<RenderComponent>();
+			renderer->SetMesh(dockMesh);
+			renderer->SetMaterial(dockMaterial);
+
+		}
+
 		// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("manifest.json");
 		// Save the scene to a JSON file
 		scene->Save("scene.json");
 	}
 
-	// Call scene awake to start up all of our components
 	scene->Window = window;
 	scene->Awake();
 
