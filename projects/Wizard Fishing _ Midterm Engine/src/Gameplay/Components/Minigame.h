@@ -21,8 +21,8 @@ public:
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
-	bool minigameActive = false;
-
+	bool minigameActive = false, pressed;
+	int maxMana, mana;
 
 public:
 	virtual void RenderImGui() override;
