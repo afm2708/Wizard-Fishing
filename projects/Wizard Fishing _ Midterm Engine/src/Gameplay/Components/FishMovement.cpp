@@ -7,6 +7,7 @@
 #include "Utils/ImGuiHelper.h"
 #include <Gameplay/Components/Casting.h>
 #include <Gameplay/Components/Minigame.h>
+#include <Gameplay/Components/RenderComponent.h>
 
 FishMovement::FishMovement() {
 	timer = 0.0f;
@@ -37,10 +38,12 @@ void FishMovement::Update(float deltaTime) {
             points.pop_back();
             points.push_back(glm::vec3(23, -50, -1));
             points.push_back(glm::vec3(23, -24, -1));
+            difficulty = static_cast <int> (rand()) / (static_cast <float> (RAND_MAX / (3)));
+            GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<RenderComponent>()->SetMaterial(materials[difficulty]);
             for (int i = 0; i < 14; i++) {
                 float x = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40)));
                 float y = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30 - (-10))));
-                float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 + 10)));
+                float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (-1 + 10)));
                 points.push_back(glm::vec3(x, y, z));
             }
             points.push_back(glm::vec3(23, -24, -1));
@@ -114,6 +117,10 @@ void FishMovement::SetSpeed(int speed) {
 void FishMovement::SetPoints(std::vector<glm::vec3> points) {
 	this->points = points;
 }
+void FishMovement::SetMats(std::vector<Gameplay::Material::Sptr> materials) {
+	this->materials = materials;
+}
+
 nlohmann::json FishMovement::ToJson() const {
 	return {
 		{ "speed", speed }

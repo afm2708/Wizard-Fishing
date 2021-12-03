@@ -63,7 +63,9 @@ void Minigame::Update(float deltaTime)
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
             moveX = 0.0f;
         }
-        if (glfwGetKey(_window, GLFW_KEY_SPACE) && flip >= 17.0f && flip <= 23.0f) {
+        if (glfwGetKey(_window, GLFW_KEY_SPACE) 
+            && flip >= 17.0f + 0.5 * GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->difficulty
+            && flip <= 23.0f - 0.5 * GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->difficulty) {
             minigameActive = false;
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
             GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasCast = false;

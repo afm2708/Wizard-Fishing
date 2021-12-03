@@ -17,7 +17,9 @@ public:
 
 	bool lured, hooked;
 
-	int index;
+	int index, difficulty;
+	
+	std::vector<Gameplay::Material::Sptr> materials;
 
 	virtual void Update(float deltaTime) override;
 
@@ -33,6 +35,8 @@ public:
 	void SetSpeed(int);
 
 	void SetPoints(std::vector<glm::vec3>);
+
+	void SetMats(std::vector<Gameplay::Material::Sptr>);
 
 	virtual nlohmann::json ToJson() const override;
 	static std::shared_ptr<FishMovement> FromJson(const nlohmann::json&);

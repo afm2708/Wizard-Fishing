@@ -644,10 +644,14 @@ int main() {
 			RenderComponent::Sptr renderer = Fish->Add<RenderComponent>();
 			renderer->SetMesh(fishMesh);
 			renderer->SetMaterial(fishMaterial);
-
+			std::vector<Gameplay::Material::Sptr> materials;
+			materials.push_back(fishMaterial);
+			materials.push_back(grassMaterial);
+			materials.push_back(lakeBottomMaterial);
 			FishMovement::Sptr lerp = Fish->Add<FishMovement>();
 			Fish->Get<FishMovement>()->pause = book->Get<PauseBehaviour>();
 			lerp->SetSpeed(6);
+			lerp->SetMats(materials);
 		}
 
 
