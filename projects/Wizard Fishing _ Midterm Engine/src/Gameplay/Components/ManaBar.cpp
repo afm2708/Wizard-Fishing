@@ -1,5 +1,5 @@
 
-#include "Gameplay/Components/Minigame.h"
+#include "Gameplay/Components/ManaBar.h"
 #include <GLFW/glfw3.h>
 #define  GLM_SWIZZLE
 #include <GLM/gtc/quaternion.hpp>
@@ -11,7 +11,7 @@
 #include <Gameplay/Components/FishMovement.h>
 #include <Gameplay/Components/Casting.h>
 
-Minigame::Minigame() :
+ManaBar::ManaBar() :
     IComponent(),
     moveX(0.0),
     moveY(0.0),
@@ -22,34 +22,31 @@ Minigame::Minigame() :
     flip(20.0f),
     minigameActive(false),
     maxMana(200),
-    pressed(false),
-    rotation()
+    pressed(false)
 {}
 
-Minigame::~Minigame() = default;
+ManaBar::~ManaBar() = default;
 
-void Minigame::Awake() {
+void ManaBar::Awake() {
 	_window = GetGameObject()->GetScene()->Window;
 }
 
-void Minigame::Update(float deltaTime)
+void ManaBar::Update(float deltaTime)
 {
-    if (!(Minigame::pause->isPaused))
+    if (!(ManaBar::pause->isPaused))
     {
         if (GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->hooked && !minigameActive) {
             minigameActive = true;
             mana = maxMana;
         }
- 
+
         if (minigameActive == true) {
 
             //my head + how far from my head + cos theta
             middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
             //my head + how far from my head + sin theta
             middleY = cameraCords->GetGameObject()->GetPosition().y + 2.0f * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-            //calculates the rotation
 
-            rotation = cameraCords->GetGameObject()->GetRotationEuler().z - 90.0f;
             flip += 1.0f;
 
             if (flip >= 40.0f) {
@@ -60,8 +57,8 @@ void Minigame::Update(float deltaTime)
 
             moveX += moveSpeedX * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
             moveY += moveSpeedY * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-            
-            GetGameObject()->SetRotation(glm::vec3(90.0f, 0, rotation));
+
+            GetGameObject()->SetRotation(glm::vec3(90.0f, 0, cameraCords->GetGameObject()->GetRotationEuler().z - 90.0f));
             GetGameObject()->SetPostion(glm::vec3(middleX + moveX, middleY + moveY, 4.0f));
         }
 
@@ -101,21 +98,21 @@ void Minigame::Update(float deltaTime)
 
 }
 
-void Minigame::RenderImGui()
+void ManaBar::RenderImGui()
 {
 	LABEL_LEFT(ImGui::DragFloat, "Speed       ", &moveSpeedX, 0.01f, 0.01f);
 	LABEL_LEFT(ImGui::DragFloat, "Speed       ", &moveSpeedY, 0.01f, 0.01f);
 }
 
-nlohmann::json Minigame::ToJson() const {
+nlohmann::json ManaBar::ToJson() const {
 	return {
 		{ "move_speedX", (moveSpeedX) },
 		{ "move_speedY", (moveSpeedY) },
 	};
 }
 
-Minigame::Sptr Minigame::FromJson(const nlohmann::json& blob) {
-	Minigame::Sptr result = std::make_shared<Minigame>();
+ManaBar::Sptr ManaBar::FromJson(const nlohmann::json& blob) {
+    ManaBar::Sptr result = std::make_shared<ManaBar>();
 	result->moveSpeedX = (blob["move_speedX"]);
 	result->moveSpeedY = (blob["move_speedY"]);
 	return result;

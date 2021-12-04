@@ -12,6 +12,7 @@
 FishMovement::FishMovement() {
 	timer = 0.0f;
 	index = 0;
+    difficulty = 0;
 	//x bounds 0, 40
 	//y bounds -10, 30
 	//z bounds -1, -10

@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
-#include "SimpleCameraControl.h"
+#include "Fishmovement.h"
+#include "Minigame.h"
 #include "PauseBehaviour.h"
 
 struct GLFWwindow;
@@ -9,39 +10,36 @@ struct GLFWwindow;
 /// A simple behaviour that allows movement of a gameobject with WASD, mouse,
 /// and ctrl + space
 /// </summary>
-class Minigame : public Gameplay::IComponent {
+class MinigameTarget : public Gameplay::IComponent {
 public:
-	typedef std::shared_ptr<Minigame> Sptr;
+	typedef std::shared_ptr<MinigameTarget> Sptr;
 
-	Minigame();
-	virtual ~Minigame();
-	SimpleCameraControl::Sptr cameraCords;
+	MinigameTarget();
+	virtual ~MinigameTarget();
+
 	
 
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
-	bool minigameActive = false, pressed;
-	float middleX;
-	float middleY;
-	float rotation;
-	int maxMana, mana;
 
 public:
 	virtual void RenderImGui() override;
-	MAKE_TYPENAME(Minigame);
+	MAKE_TYPENAME(MinigameTarget);
 	virtual nlohmann::json ToJson() const override;
-	static Minigame::Sptr FromJson(const nlohmann::json& blob);
+	static MinigameTarget::Sptr FromJson(const nlohmann::json& blob);
 	PauseBehaviour::Sptr pause;
-
+	Minigame::Sptr minigame;
+	FishMovement::Sptr difficulty;
 
 protected:
 	float moveX;
 	float moveY;
 	float moveSpeedX;
 	float moveSpeedY;
+	float middleX;
+	float middleY;
 	float flip;
-
 
 	GLFWwindow* _window;
 };

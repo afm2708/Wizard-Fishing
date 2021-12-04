@@ -9,12 +9,12 @@ struct GLFWwindow;
 /// A simple behaviour that allows movement of a gameobject with WASD, mouse,
 /// and ctrl + space
 /// </summary>
-class Minigame : public Gameplay::IComponent {
+class ManaBar : public Gameplay::IComponent {
 public:
-	typedef std::shared_ptr<Minigame> Sptr;
+	typedef std::shared_ptr<ManaBar> Sptr;
 
-	Minigame();
-	virtual ~Minigame();
+	ManaBar();
+	virtual ~ManaBar();
 	SimpleCameraControl::Sptr cameraCords;
 	
 
@@ -22,16 +22,13 @@ public:
 	virtual void Update(float deltaTime) override;
 
 	bool minigameActive = false, pressed;
-	float middleX;
-	float middleY;
-	float rotation;
 	int maxMana, mana;
 
 public:
 	virtual void RenderImGui() override;
-	MAKE_TYPENAME(Minigame);
+	MAKE_TYPENAME(ManaBar);
 	virtual nlohmann::json ToJson() const override;
-	static Minigame::Sptr FromJson(const nlohmann::json& blob);
+	static ManaBar::Sptr FromJson(const nlohmann::json& blob);
 	PauseBehaviour::Sptr pause;
 
 
@@ -40,8 +37,9 @@ protected:
 	float moveY;
 	float moveSpeedX;
 	float moveSpeedY;
+	float middleX;
+	float middleY;
 	float flip;
-
 
 	GLFWwindow* _window;
 };
