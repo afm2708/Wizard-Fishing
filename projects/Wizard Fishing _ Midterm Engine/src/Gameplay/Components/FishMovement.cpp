@@ -80,7 +80,7 @@ void FishMovement::Update(float deltaTime) {
             }
             glm::vec3 lerpCoords((points[1] * time) + points[0] * (1 - time));
             GetGameObject()->SetPostion(lerpCoords);
-
+            GetGameObject()->LookAt(points[1]);
         }
 
         // Neither Catmull nor Bezier make sense with less than 4 points.
@@ -104,7 +104,7 @@ void FishMovement::Update(float deltaTime) {
 
         GetGameObject()->SetPostion(Catmull(p0, p1, p2, p3, time));
         GetGameObject()->LookAt(p1);
-
+        
 	}
 }
 
