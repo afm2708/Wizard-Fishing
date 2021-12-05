@@ -20,14 +20,14 @@ void PauseBehaviour::Update(float deltaTime) {
 			if (!isPaused)
 			{
 				GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->middleX, GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->middleY, 4.0f));
-				GetGameObject()->SetRotation(glm::vec3(90.0f, 90.0f, GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->rotation));
+				GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->rotation + 90.0f));
 				isPaused = true;
 				pauseClock += 1;
 			}
 			else
 			{
 				GetGameObject()->SetPostion(glm::vec3(59.0, 16.07, 2.4));
-				GetGameObject()->SetRotation(glm::vec3(90, 0, 0));
+				GetGameObject()->SetRotation(glm::vec3(0, 0, 0));
 				isPaused = false;
 				pauseClock += 1;
 			}
