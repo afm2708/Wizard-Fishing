@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
-#include "SimpleCameraControl.h"
+#include "Fishmovement.h"
+#include "Minigame.h"
 #include "PauseBehaviour.h"
 
 struct GLFWwindow;
@@ -9,42 +10,36 @@ struct GLFWwindow;
 /// A simple behaviour that allows movement of a gameobject with WASD, mouse,
 /// and ctrl + space
 /// </summary>
-class Minigame : public Gameplay::IComponent {
+class MinigameTargetR : public Gameplay::IComponent {
 public:
-	typedef std::shared_ptr<Minigame> Sptr;
+	typedef std::shared_ptr<MinigameTargetR> Sptr;
 
-	Minigame();
-	virtual ~Minigame();
-	SimpleCameraControl::Sptr cameraCords;
+	MinigameTargetR();
+	virtual ~MinigameTargetR();
+
 	
 
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
-	bool minigameActive = false, pressed;
-	float middleX;
-	float middleY;
-	float rotation;
-	int dif;
-	int maxMana, mana;
-	glm::vec3(leftEdge) = glm::vec3();
-	glm::vec3(rightEdge) = glm::vec3();
 
 public:
 	virtual void RenderImGui() override;
-	MAKE_TYPENAME(Minigame);
+	MAKE_TYPENAME(MinigameTargetR);
 	virtual nlohmann::json ToJson() const override;
-	static Minigame::Sptr FromJson(const nlohmann::json& blob);
+	static MinigameTargetR::Sptr FromJson(const nlohmann::json& blob);
 	PauseBehaviour::Sptr pause;
-
+	Minigame::Sptr minigame;
+	FishMovement::Sptr difficulty;
 
 protected:
 	float moveX;
 	float moveY;
 	float moveSpeedX;
 	float moveSpeedY;
+	float middleX;
+	float middleY;
 	float flip;
-
 
 	GLFWwindow* _window;
 };

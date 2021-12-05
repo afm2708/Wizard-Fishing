@@ -59,7 +59,8 @@
 #include "Gameplay/Components/Casting.h"
 #include "Gameplay/Components/PauseBehaviour.h"
 #include "Gameplay/Components/Manabar.h"
-#include "Gameplay/Components/MinigameTarget.h"
+#include "Gameplay/Components/MinigameTargetL.h"
+#include "Gameplay/Components/MinigameTargetR.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -261,7 +262,8 @@ int main() {
 	ComponentManager::RegisterType<Casting>();
 	ComponentManager::RegisterType<PauseBehaviour>();
 	ComponentManager::RegisterType<ManaBar>();
-	ComponentManager::RegisterType<MinigameTarget>();
+	ComponentManager::RegisterType<MinigameTargetL>();
+	ComponentManager::RegisterType<MinigameTargetR>();
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -297,13 +299,13 @@ int main() {
 		Texture2D::Sptr	   fishTex = ResourceManager::CreateAsset<Texture2D>("Textures/FishTex.png");
 
 		MeshResource::Sptr grassMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Grass.obj");
-		Texture2D::Sptr    grassTexture = ResourceManager::CreateAsset<Texture2D>("Textures/Grass.png");
+		Texture2D::Sptr    grassTexture = ResourceManager::CreateAsset<Texture2D>("Textures/GrassTex.png");
 
 		MeshResource::Sptr lakeBottomMesh = ResourceManager::CreateAsset<MeshResource>("Objects/LakeBottom.obj");
 		Texture2D::Sptr    lakeBottomTexture = ResourceManager::CreateAsset<Texture2D>("Textures/LakeBottomTex.png");
 
 		MeshResource::Sptr minigamePointerMesh = ResourceManager::CreateAsset<MeshResource>("Objects/MinigamePointer.obj");
-		Texture2D::Sptr    minigamePointerTex = ResourceManager::CreateAsset<Texture2D>("Textures/MinigamePointer.png");
+		Texture2D::Sptr    minigamePointerTex = ResourceManager::CreateAsset<Texture2D>("Textures/MinigamePointerTex.png");
 
 		MeshResource::Sptr minigameTargetMesh = ResourceManager::CreateAsset<MeshResource>("Objects/plane.obj");
 		Texture2D::Sptr    minigameTargetTex = ResourceManager::CreateAsset<Texture2D>("Textures/GrassTex.png");
@@ -673,21 +675,35 @@ int main() {
 		}
 
 
-		GameObject::Sptr PointerTarget = scene->CreateGameObject("Pointer Target");
+		GameObject::Sptr PointerTargetL = scene->CreateGameObject("Pointer Target Left");
 		{
 			// Scale up the plane
-			PointerTarget->SetScale(glm::vec3(0.5F));
+			PointerTargetL->SetScale(glm::vec3(0.5F));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = PointerTarget->Add<RenderComponent>();
+			RenderComponent::Sptr renderer = PointerTargetL->Add<RenderComponent>();
 			renderer->SetMesh(minigameTargetMesh);
 			renderer->SetMaterial(minigameTargetMaterial);
 
-			PointerTarget->Add<MinigameTarget>();
-			PointerTarget->Get<MinigameTarget>()->pause = book->Get<PauseBehaviour>();
-			PointerTarget->Get<MinigameTarget>()->minigame = MinigamePointer->Get<Minigame>();
-			PointerTarget->Get<MinigameTarget>()->difficulty = Fish->Get<FishMovement>();
+			PointerTargetL->Add<MinigameTargetL>();
+			PointerTargetL->Get<MinigameTargetL>()->pause = book->Get<PauseBehaviour>();
+			PointerTargetL->Get<MinigameTargetL>()->minigame = MinigamePointer->Get<Minigame>();
 
+		}
+
+		GameObject::Sptr PointerTargetR = scene->CreateGameObject("Pointer Target Right");
+		{
+			// Scale up the plane
+			PointerTargetR->SetScale(glm::vec3(0.5F));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = PointerTargetR->Add<RenderComponent>();
+			renderer->SetMesh(minigameTargetMesh);
+			renderer->SetMaterial(minigameTargetMaterial);
+
+			PointerTargetR->Add<MinigameTargetR>();
+			PointerTargetR->Get<MinigameTargetR>()->pause = book->Get<PauseBehaviour>();
+			PointerTargetR->Get<MinigameTargetR>()->minigame = MinigamePointer->Get<Minigame>();
 		}
 
 		// Create a trigger volume for testing how we can detect collisions with objects!

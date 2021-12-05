@@ -1,5 +1,5 @@
 
-#include "Gameplay/Components/MinigameTarget.h"
+#include "Gameplay/Components/MinigameTargetR.h"
 #include <GLFW/glfw3.h>
 #define  GLM_SWIZZLE
 #include <GLM/gtc/quaternion.hpp>
@@ -11,7 +11,7 @@
 #include <Gameplay/Components/FishMovement.h>
 #include <Gameplay/Components/Casting.h>
 
-MinigameTarget::MinigameTarget() :
+MinigameTargetR::MinigameTargetR() :
     IComponent(),
     moveX(0.0),
     moveY(0.0),
@@ -23,22 +23,21 @@ MinigameTarget::MinigameTarget() :
 
 {}
 
-MinigameTarget::~MinigameTarget() = default;
+MinigameTargetR::~MinigameTargetR() = default;
 
-void MinigameTarget::Awake() {
+void MinigameTargetR::Awake() {
 	_window = GetGameObject()->GetScene()->Window;
 }
 
-void MinigameTarget::Update(float deltaTime)
+void MinigameTargetR::Update(float deltaTime)
 {
-    if (!(MinigameTarget::pause->isPaused))
+    if (!(MinigameTargetR::pause->isPaused))
     {
-        if ((MinigameTarget::minigame->minigameActive))
+        if ((MinigameTargetR::minigame->minigameActive))
         {
-            GetGameObject()->SetPostion(glm::vec3(MinigameTarget::minigame->middleX, MinigameTarget::minigame->middleY, 3.71f));
-            GetGameObject()->SetRotation(glm::vec3(0, 0,MinigameTarget::minigame->rotation -90.0f));
-            GetGameObject()->SetScale(glm::vec3(0.30f - 0.1f * MinigameTarget::difficulty->difficulty, 0, 0.1f));
-            std::cout << MinigameTarget::difficulty->difficulty << std::endl;
+            GetGameObject()->SetPostion(glm::vec3(MinigameTargetR::minigame->rightEdge));
+            GetGameObject()->SetRotation(glm::vec3(0, 0, MinigameTargetR::minigame->rotation -90.0f));
+            GetGameObject()->SetScale(glm::vec3(0.1f, 0, 0.1f));
         }
         else {
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
@@ -49,21 +48,21 @@ void MinigameTarget::Update(float deltaTime)
 
 }
 
-void MinigameTarget::RenderImGui()
+void MinigameTargetR::RenderImGui()
 {
 	LABEL_LEFT(ImGui::DragFloat, "Speed       ", &moveSpeedX, 0.01f, 0.01f);
 	LABEL_LEFT(ImGui::DragFloat, "Speed       ", &moveSpeedY, 0.01f, 0.01f);
 }
 
-nlohmann::json MinigameTarget::ToJson() const {
+nlohmann::json MinigameTargetR::ToJson() const {
 	return {
 		{ "move_speedX", (moveSpeedX) },
 		{ "move_speedY", (moveSpeedY) },
 	};
 }
 
-MinigameTarget::Sptr MinigameTarget::FromJson(const nlohmann::json& blob) {
-    MinigameTarget::Sptr result = std::make_shared<MinigameTarget>();
+MinigameTargetR::Sptr MinigameTargetR::FromJson(const nlohmann::json& blob) {
+    MinigameTargetR::Sptr result = std::make_shared<MinigameTargetR>();
 	result->moveSpeedX = (blob["move_speedX"]);
 	result->moveSpeedY = (blob["move_speedY"]);
 	return result;

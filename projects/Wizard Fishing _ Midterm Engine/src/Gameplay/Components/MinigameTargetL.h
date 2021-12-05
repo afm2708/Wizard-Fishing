@@ -10,12 +10,12 @@ struct GLFWwindow;
 /// A simple behaviour that allows movement of a gameobject with WASD, mouse,
 /// and ctrl + space
 /// </summary>
-class MinigameTarget : public Gameplay::IComponent {
+class MinigameTargetL : public Gameplay::IComponent {
 public:
-	typedef std::shared_ptr<MinigameTarget> Sptr;
+	typedef std::shared_ptr<MinigameTargetL> Sptr;
 
-	MinigameTarget();
-	virtual ~MinigameTarget();
+	MinigameTargetL();
+	virtual ~MinigameTargetL();
 
 	
 
@@ -25,9 +25,9 @@ public:
 
 public:
 	virtual void RenderImGui() override;
-	MAKE_TYPENAME(MinigameTarget);
+	MAKE_TYPENAME(MinigameTargetL);
 	virtual nlohmann::json ToJson() const override;
-	static MinigameTarget::Sptr FromJson(const nlohmann::json& blob);
+	static MinigameTargetL::Sptr FromJson(const nlohmann::json& blob);
 	PauseBehaviour::Sptr pause;
 	Minigame::Sptr minigame;
 	FishMovement::Sptr difficulty;

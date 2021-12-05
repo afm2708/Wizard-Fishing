@@ -23,7 +23,10 @@ Minigame::Minigame() :
     minigameActive(false),
     maxMana(200),
     pressed(false),
-    rotation()
+    rotation(),
+    dif(),
+    leftEdge(),
+    rightEdge()
 {}
 
 Minigame::~Minigame() = default;
@@ -41,7 +44,13 @@ void Minigame::Update(float deltaTime)
     //calculates the rotation
     rotation = cameraCords->GetGameObject()->GetRotationEuler().z - 90.0f;
 
+    //Sets Difficuty from fish
+    dif = GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->difficulty;
 
+    //Calculates where the edges of the target are
+    leftEdge = glm::vec3(middleX - ((6 -(2 * dif)) *(0.05 * (cos(cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)))), middleY - ((6 - (2 * dif)) *(0.05 * (sin(cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)))), 3.5f);
+    rightEdge = glm::vec3(middleX + ((6 - (2 * dif)) * (0.05 * (cos(cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)))), middleY + ((6 - (2 * dif)) * (0.05 * (sin(cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)))), 3.5f);
+    
     if (!(Minigame::pause->isPaused))
     {
         if (GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->hooked && !minigameActive) {
@@ -58,20 +67,20 @@ void Minigame::Update(float deltaTime)
                 flip = 0.0f;
             }
 
+            //Uses trig to find how to move each axis
             moveX += moveSpeedX * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
             moveY += moveSpeedY * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-            
+    
             GetGameObject()->SetRotation(glm::vec3(90.0f, 0, rotation));
             GetGameObject()->SetPostion(glm::vec3(middleX + moveX, middleY + moveY, 4.0f));
         }
-
         else {
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
             moveX = 0.0f;
         }
         if (glfwGetKey(_window, GLFW_KEY_SPACE && !pressed)
-            && flip >= 17.0f + 0.5 * GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->difficulty
-            && flip <= 23.0f - 0.5 * GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->difficulty) {
+            && flip >= 14.0f + 2.0 * dif
+            && flip <= 26.0f - 2.0 * dif) {
             minigameActive = false;
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
             GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasCast = false;
