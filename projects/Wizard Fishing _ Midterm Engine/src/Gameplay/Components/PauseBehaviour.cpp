@@ -36,7 +36,7 @@ void PauseBehaviour::Update(float deltaTime) {
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_ENTER))
 	{
 		if (isPaused) {
-			glfwWindowShouldClose(GetGameObject()->GetScene()->Window);
+		glfwSetWindowShouldClose(GetGameObject()->GetScene()->Window, true);
 		}
 	}
 	if (pauseClock >= 1) {
