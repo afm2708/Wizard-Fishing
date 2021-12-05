@@ -577,7 +577,17 @@ int main() {
 			scene->MainCamera = cam;
 		}
 
+		GameObject::Sptr staff = scene->CreateGameObject("Staff");
+		{
+			// Scale up the plane
+			staff->SetScale(glm::vec3(2.0F));
+			staff->SetRotation(glm::vec3(0, 0, 0));
 
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = staff->Add<RenderComponent>();
+			renderer->SetMesh(staffMesh);
+			renderer->SetMaterial(staffMaterial);
+		}
 
 		GameObject::Sptr MinigamePointer = scene->CreateGameObject("Minigame Pointer");
 		{
