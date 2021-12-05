@@ -298,7 +298,9 @@ int main() {
 		Texture2D::Sptr	   dockTex = ResourceManager::CreateAsset<Texture2D>("Textures/DockTex.png");
 
 		MeshResource::Sptr fishMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Fish.obj");
-		Texture2D::Sptr	   fishTex = ResourceManager::CreateAsset<Texture2D>("Textures/FishTex.png");
+		Texture2D::Sptr	   redfishTex = ResourceManager::CreateAsset<Texture2D>("Textures/RedFishTex.png");
+		Texture2D::Sptr	   greenfishTex = ResourceManager::CreateAsset<Texture2D>("Textures/GreenFishTex.png");
+		Texture2D::Sptr	   purplefishTex = ResourceManager::CreateAsset<Texture2D>("Textures/PurpleFishTex.png");
 
 		MeshResource::Sptr grassMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Grass.obj");
 		Texture2D::Sptr    grassTexture = ResourceManager::CreateAsset<Texture2D>("Textures/GrassTex.png");
@@ -330,6 +332,9 @@ int main() {
 
 		MeshResource::Sptr targetMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Target.obj");
 		Texture2D::Sptr    targetTex = ResourceManager::CreateAsset<Texture2D>("Textures/TargetTex.png");
+
+		MeshResource::Sptr waterMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Water.obj");
+		Texture2D::Sptr    waterTex = ResourceManager::CreateAsset<Texture2D>("Textures/WaterTex.png");
 
 		MeshResource::Sptr wizardMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard.obj");
 		//Texture2D::Sptr    wizardTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTex.png");
@@ -376,12 +381,28 @@ int main() {
 			dockMaterial->Shininess = 2.0f;
 		}
 
-		Material::Sptr fishMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr redfishMaterial = ResourceManager::CreateAsset<Material>();
 		{
-			fishMaterial->Name = "Fish";
-			fishMaterial->MatShader = scene->BaseShader;
-			fishMaterial->Texture = fishTex;
-			fishMaterial->Shininess = 256.0f;
+			redfishMaterial->Name = "Red Fish";
+			redfishMaterial->MatShader = scene->BaseShader;
+			redfishMaterial->Texture = redfishTex;
+			redfishMaterial->Shininess = 256.0f;
+		}
+
+		Material::Sptr greenfishMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			greenfishMaterial->Name = "Green Fish";
+			greenfishMaterial->MatShader = scene->BaseShader;
+			greenfishMaterial->Texture = greenfishTex;
+			greenfishMaterial->Shininess = 256.0f;
+		}
+
+		Material::Sptr purplefishMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			purplefishMaterial->Name = "Purple Fish";
+			purplefishMaterial->MatShader = scene->BaseShader;
+			purplefishMaterial->Texture = purplefishTex;
+			purplefishMaterial->Shininess = 256.0f;
 		}
 
 		Material::Sptr grassMaterial = ResourceManager::CreateAsset<Material>();
@@ -454,6 +475,14 @@ int main() {
 			targetMaterial->MatShader = scene->BaseShader;
 			targetMaterial->Texture = targetTex;
 			targetMaterial->Shininess = 256.0f;
+		}
+
+		Material::Sptr waterMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			waterMaterial->Name = "Water";
+			waterMaterial->MatShader = scene->BaseShader;
+			waterMaterial->Texture = waterTex;
+			waterMaterial->Shininess = 500.0f;
 		}
 
 		Material::Sptr wizardTentMaterial = ResourceManager::CreateAsset<Material>();
@@ -665,11 +694,11 @@ int main() {
 			// Add a render component
 			RenderComponent::Sptr renderer = Fish->Add<RenderComponent>();
 			renderer->SetMesh(fishMesh);
-			renderer->SetMaterial(fishMaterial);
+			renderer->SetMaterial(redfishMaterial);
 			std::vector<Gameplay::Material::Sptr> materials;
-			materials.push_back(fishMaterial);
-			materials.push_back(grassMaterial);
-			materials.push_back(lakeBottomMaterial);
+			materials.push_back(redfishMaterial);
+			materials.push_back(greenfishMaterial);
+			materials.push_back(purplefishMaterial);
 			FishMovement::Sptr lerp = Fish->Add<FishMovement>();
 			Fish->Get<FishMovement>()->pause = book->Get<PauseBehaviour>();
 			lerp->SetSpeed(6);
@@ -716,6 +745,21 @@ int main() {
 			collider->SetPosition(glm::vec3(0.0f, 0.0f, 0.5f));
 			volume->AddCollider(collider);
 		}*/
+
+
+		GameObject::Sptr water = scene->CreateGameObject("Water");
+		{
+			// Scale up the plane
+			water->SetPostion(glm::vec3(0.0, 0.0, -0.70));
+			water->SetScale(glm::vec3(0.5F));
+			water->SetRotation(glm::vec3(90, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = water->Add<RenderComponent>();
+			renderer->SetMesh(waterMesh);
+			renderer->SetMaterial(waterMaterial);
+
+		}
 
 		GameObject::Sptr wizardTent = scene->CreateGameObject("Wizard Tent");
 		{

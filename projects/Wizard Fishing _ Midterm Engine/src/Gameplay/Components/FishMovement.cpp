@@ -16,17 +16,17 @@ FishMovement::FishMovement() {
 	//x bounds 0, 40
 	//y bounds -10, 30
 	//z bounds -1, -10
-	points.push_back(glm::vec3(23, -50, -1));
-    points.push_back(glm::vec3(23, -24, -1));
+	points.push_back(glm::vec3(23, -50, -4));
+    points.push_back(glm::vec3(23, -24, -4));
 	lured = false;
 	hooked = false;
 	for (int i = 0; i < 14; i++) {
 	float x = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40)));
 	float y = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30 - (-10))));
-	float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (-1 + 10)));
+	float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (-2 + 10)));
 	points.push_back(glm::vec3(x, y, z));
 	}
-    points.push_back(glm::vec3(23, -24, -1));
+    points.push_back(glm::vec3(23, -24, -2));
 }
 
 void FishMovement::Update(float deltaTime) {
@@ -37,17 +37,17 @@ void FishMovement::Update(float deltaTime) {
             lured = false;
             points.pop_back();
             points.pop_back();
-            points.push_back(glm::vec3(23, -50, -1));
-            points.push_back(glm::vec3(23, -24, -1));
+            points.push_back(glm::vec3(23, -50, -2));
+            points.push_back(glm::vec3(23, -24, -2));
             difficulty = static_cast <int> (rand()) / (static_cast <float> (RAND_MAX / (3)));
             GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<RenderComponent>()->SetMaterial(materials[difficulty]);
             for (int i = 0; i < 14; i++) {
                 float x = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40)));
                 float y = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30 - (-10))));
-                float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (-1 + 10)));
+                float z = -10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (-2 + 10)));
                 points.push_back(glm::vec3(x, y, z));
             }
-            points.push_back(glm::vec3(23, -24, -1));
+            points.push_back(glm::vec3(23, -24, -2));
             index = 0;
             timer = 0;
             GetGameObject()->SetPostion(points[0]);
