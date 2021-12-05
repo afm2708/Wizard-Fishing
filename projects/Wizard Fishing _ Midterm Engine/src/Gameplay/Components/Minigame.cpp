@@ -34,6 +34,14 @@ void Minigame::Awake() {
 
 void Minigame::Update(float deltaTime)
 {
+    //my head + how far from my head + cos theta
+    middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+    //my head + how far from my head + sin theta
+    middleY = cameraCords->GetGameObject()->GetPosition().y + 2.0f * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+    //calculates the rotation
+    rotation = cameraCords->GetGameObject()->GetRotationEuler().z - 90.0f;
+
+
     if (!(Minigame::pause->isPaused))
     {
         if (GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->hooked && !minigameActive) {
@@ -42,14 +50,6 @@ void Minigame::Update(float deltaTime)
         }
  
         if (minigameActive == true) {
-
-            //my head + how far from my head + cos theta
-            middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-            //my head + how far from my head + sin theta
-            middleY = cameraCords->GetGameObject()->GetPosition().y + 2.0f * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-            //calculates the rotation
-
-            rotation = cameraCords->GetGameObject()->GetRotationEuler().z - 90.0f;
             flip += 1.0f;
 
             if (flip >= 40.0f) {

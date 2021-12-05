@@ -308,9 +308,11 @@ int main() {
 		MeshResource::Sptr minigameTargetMesh = ResourceManager::CreateAsset<MeshResource>("Objects/plane.obj");
 		Texture2D::Sptr    minigameTargetTex = ResourceManager::CreateAsset<Texture2D>("Textures/GrassTex.png");
 
-
 		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Monkey.obj");
 		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/MonkeyTex.png");
+
+		MeshResource::Sptr spellbookMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Spellbook.obj");
+		//Texture2D::Sptr    spellbookTex = ResourceManager::CreateAsset<Texture2D>("Textures/Spellbook.png");
 
 		MeshResource::Sptr staffMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Staff.obj");
 		Texture2D::Sptr    staffTex = ResourceManager::CreateAsset<Texture2D>("Textures/StaffTex.png");
@@ -488,12 +490,13 @@ int main() {
 		GameObject::Sptr book = scene->CreateGameObject("Book");
 		{
 			// Scale up the plane
+			book->SetPostion(glm::vec3(59.0, 16.07, 2.4));
 			book->SetScale(glm::vec3(0.5F));
 			book->SetRotation(glm::vec3(90, 0, 0));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = book->Add<RenderComponent>();
-			renderer->SetMesh(dockMesh);
+			renderer->SetMesh(spellbookMesh);
 			renderer->SetMaterial(dockMaterial);
 
 			book->Add<PauseBehaviour>();
@@ -713,6 +716,7 @@ int main() {
 		GameObject::Sptr dock = scene->CreateGameObject("Dock");
 		{
 			// Scale up the plane
+			dock->SetPostion(glm::vec3(0, 0, -1));
 			dock->SetScale(glm::vec3(0.5F));
 			dock->SetRotation(glm::vec3(90, 0, 0));
 
@@ -726,7 +730,8 @@ int main() {
 		GameObject::Sptr tabletop = scene->CreateGameObject("Tabletop");
 		{
 			tabletop->SetScale(glm::vec3(0.5f));
-			tabletop->SetPostion(glm::vec3(-34, 50, -1));
+			tabletop->SetRotation(glm::vec3(0, 0, 90));
+			tabletop->SetPostion(glm::vec3(0, 0, -1));
 
 			RenderComponent::Sptr renderer = tabletop->Add<RenderComponent>();
 			renderer->SetMesh(tableTopMesh);
@@ -736,7 +741,8 @@ int main() {
 		GameObject::Sptr tableleg1 = scene->CreateGameObject("Table Leg 1");
 		{
 			tableleg1->SetScale(glm::vec3(0.5f));
-			tableleg1->SetPostion(glm::vec3(-34, 50, -1));
+			tableleg1->SetPostion(glm::vec3(0, 0, -1));
+			tableleg1->SetRotation(glm::vec3(0, 0, 90));
 
 			RenderComponent::Sptr renderer = tableleg1->Add<RenderComponent>();
 			renderer->SetMesh(tableLeg1Mesh);
@@ -746,7 +752,8 @@ int main() {
 		GameObject::Sptr tableleg2 = scene->CreateGameObject("Table Leg 2");
 		{
 			tableleg2->SetScale(glm::vec3(0.5f));
-			tableleg2->SetPostion(glm::vec3(-38.5, 50, -1));
+			tableleg2->SetPostion(glm::vec3(0, -4.5, -1));
+			tableleg2->SetRotation(glm::vec3(0, 0, 90));
 
 			RenderComponent::Sptr renderer = tableleg2->Add<RenderComponent>();
 			renderer->SetMesh(tableLeg1Mesh);
@@ -756,7 +763,8 @@ int main() {
 		GameObject::Sptr tableleg3 = scene->CreateGameObject("Table Leg 3");
 		{
 			tableleg3->SetScale(glm::vec3(0.5f));
-			tableleg3->SetPostion(glm::vec3(-34, 48, -1));
+			tableleg3->SetPostion(glm::vec3(2, 0, -1));
+			tableleg3->SetRotation(glm::vec3(0, 0, 90));
 
 			RenderComponent::Sptr renderer = tableleg3->Add<RenderComponent>();
 			renderer->SetMesh(tableLeg1Mesh);
@@ -766,7 +774,8 @@ int main() {
 		GameObject::Sptr tableleg4 = scene->CreateGameObject("Table Leg 4");
 		{
 			tableleg4->SetScale(glm::vec3(0.5f));
-			tableleg4->SetPostion(glm::vec3(-38.5, 50, -1));
+			tableleg4->SetPostion(glm::vec3(0, -4.5, -1));
+			tableleg4->SetRotation(glm::vec3(0, 0, 90));
 
 			RenderComponent::Sptr renderer = tableleg4->Add<RenderComponent>();
 			renderer->SetMesh(tableLeg2Mesh);

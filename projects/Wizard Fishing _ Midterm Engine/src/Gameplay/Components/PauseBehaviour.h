@@ -9,6 +9,7 @@ public:
 	virtual void Update(float deltaTime) override;
 
 	bool isPaused;
+	int pauseClock = 0;
 
 	virtual void RenderImGui() override;
 
