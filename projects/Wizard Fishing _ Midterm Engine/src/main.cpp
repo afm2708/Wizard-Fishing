@@ -62,6 +62,9 @@
 #include "Gameplay/Components/MinigameTargetL.h"
 #include "Gameplay/Components/MinigameTargetR.h"
 #include "Gameplay/Components/StaffBehaviour.h"
+#include "Gameplay/Components/MorphAnimator.h"
+#include "Gameplay/Components/MorphMeshRenderer.h"
+
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -266,6 +269,8 @@ int main() {
 	ComponentManager::RegisterType<ManaBar>();
 	ComponentManager::RegisterType<MinigameTargetL>();
 	ComponentManager::RegisterType<MinigameTargetR>();
+	ComponentManager::RegisterType<MorphAnimator>();
+	ComponentManager::RegisterType<MorphMeshRenderer>();
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
