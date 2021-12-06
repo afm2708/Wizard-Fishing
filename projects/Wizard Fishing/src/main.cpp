@@ -391,6 +391,9 @@ int main() {
 		Texture2D::Sptr    treeTex = ResourceManager::CreateAsset<Texture2D>("Textures/TreeTex.png");
 		Texture2D::Sptr    tree2Tex = ResourceManager::CreateAsset<Texture2D>("Textures/Tree2Tex.png");
 
+		MeshResource::Sptr TreeAnimMesh = ResourceManager::CreateAsset<MeshResource>("Objects/TreeAnimIdle.obj");
+		MeshResource::Sptr TreeAnim2Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/TreeAnim2.obj");
+		MeshResource::Sptr TreeAnim3Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/TreeAnim3.obj");
 
 		MeshResource::Sptr wizardTowerDoorsMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerDoors.obj");
 		MeshResource::Sptr wizardTowerPortalMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerPortal.obj");
@@ -511,6 +514,13 @@ int main() {
 			treeMaterial->Shininess = 2.0f;
 		}
 
+		Material::Sptr treeAnimMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			treeAnimMaterial->Name = "Tree";
+			treeAnimMaterial->MatShader = morphShader;
+			treeAnimMaterial->Texture = treeTex;
+			treeAnimMaterial->Shininess = 2.0f;
+		}
 
 		Material::Sptr tree2Material = ResourceManager::CreateAsset<Material>();
 		{
@@ -1170,6 +1180,27 @@ int main() {
 			RenderComponent::Sptr renderer = forest1->Add<RenderComponent>();
 			renderer->SetMesh(forestMesh);
 			renderer->SetMaterial(treeMaterial);
+		}
+
+		GameObject::Sptr TreeAnim = scene->CreateGameObject("TreeAnim");
+		{
+			TreeAnim->SetScale(glm::vec3(0.5f));
+			TreeAnim->SetPostion(glm::vec3(-10.0f, -10.0f, -0.6f));
+			TreeAnim->SetRotation(glm::vec3(0, 0, -90));
+
+
+			RenderComponent::Sptr renderer = TreeAnim->Add<RenderComponent>();
+			renderer->SetMesh(TreeAnimMesh);
+			renderer->SetMaterial(treeAnimMaterial);
+			TreeAnim->Add<MorphMeshRenderer>();
+			TreeAnim->Add<MorphAnimator>();
+			TreeAnim->Get<MorphAnimator>()->SetFrameTime(3.0f);
+			std::vector<MeshResource::Sptr> frames;
+			frames.push_back(TreeAnimMesh);
+			frames.push_back(TreeAnim2Mesh);
+			frames.push_back(TreeAnim3Mesh);
+			TreeAnim->Get<MorphAnimator>()->SetFrames(frames);
+			TreeAnim->Get<MorphAnimator>()->shouldAnimate = true;
 		}
 
 		GameObject::Sptr forest2 = scene->CreateGameObject("forest2");
