@@ -368,6 +368,24 @@ int main() {
 		Texture2D::Sptr    wizardTentTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTentTex.png");
 
 
+		MeshResource::Sptr wizardTowerDoorsMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerDoors.obj");
+		MeshResource::Sptr wizardTowerPortalMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerPortal.obj");
+		MeshResource::Sptr wizardTowerRoofMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerRoof.obj");
+		MeshResource::Sptr wizardTowerStoneMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerStone.obj");
+		MeshResource::Sptr wizardTowerWindowsMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerWindows.obj");
+		MeshResource::Sptr wizardTowerWoodMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerWood.obj");
+		MeshResource::Sptr wizardTowerLightStoneMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerLightStone.obj");
+		MeshResource::Sptr boatMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Boat.obj");
+
+		Texture2D::Sptr    doorTex = ResourceManager::CreateAsset<Texture2D>("Textures/DoorTex.png");
+		Texture2D::Sptr    portalTex = ResourceManager::CreateAsset<Texture2D>("Textures/PortalTex.png");
+		Texture2D::Sptr    roofTex = ResourceManager::CreateAsset<Texture2D>("Textures/RoofTex.png");
+		Texture2D::Sptr    stoneTex = ResourceManager::CreateAsset<Texture2D>("Textures/StoneTex.png");
+		Texture2D::Sptr    lightStoneTex = ResourceManager::CreateAsset<Texture2D>("Textures/LightStoneTex.png");
+		Texture2D::Sptr    windowTex = ResourceManager::CreateAsset<Texture2D>("Textures/WindowTex.png");
+
+
+
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
 		//TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/ocean/ocean.jpg");
@@ -388,6 +406,53 @@ int main() {
 
 		// Create our materials
 		// This will be our box material, with no environment reflections
+		Material::Sptr doorMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			doorMaterial->Name = "Door";
+			doorMaterial->MatShader = basicShader;
+			doorMaterial->Texture = doorTex;
+			doorMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr portalMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			portalMaterial->Name = "Portal";
+			portalMaterial->MatShader = basicShader;
+			portalMaterial->Texture = portalTex;
+			portalMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr roofMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			roofMaterial->Name = "Roof";
+			roofMaterial->MatShader = basicShader;
+			roofMaterial->Texture = roofTex;
+			roofMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr stoneMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			stoneMaterial->Name = "Stone";
+			stoneMaterial->MatShader = basicShader;
+			stoneMaterial->Texture = stoneTex;
+			stoneMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr windowMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			windowMaterial->Name = "Window";
+			windowMaterial->MatShader = basicShader;
+			windowMaterial->Texture = windowTex;
+			windowMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr lightStoneMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			lightStoneMaterial->Name = "Light Stone";
+			lightStoneMaterial->MatShader = basicShader;
+			lightStoneMaterial->Texture = lightStoneTex;
+			lightStoneMaterial->Shininess = 2.0f;
+		}
 		Material::Sptr bobberMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			bobberMaterial->Name = "Bobber";
@@ -495,7 +560,7 @@ int main() {
 
 		Material::Sptr spellbookMaterial = ResourceManager::CreateAsset<Material>();
 		{
-			spellbookMaterial->Name = "Staff";
+			spellbookMaterial->Name = "Book";
 			spellbookMaterial->MatShader = basicShader;
 			spellbookMaterial->Texture = spellbookTex;
 			spellbookMaterial->Shininess = 256.0f;
@@ -506,7 +571,7 @@ int main() {
 		{
 			tableLegMaterial->Name = "Table Leg";
 			tableLegMaterial->MatShader = basicShader;
-			tableLegMaterial->Texture = staffTex;
+			tableLegMaterial->Texture =  tableLegTex;
 			tableLegMaterial->Shininess = 256.0f;
 		}
 
@@ -514,7 +579,7 @@ int main() {
 		{
 			tableTopMaterial->Name = "Table Top";
 			tableTopMaterial->MatShader = basicShader;
-			tableTopMaterial->Texture = staffTex;
+			tableTopMaterial->Texture = tableTopTex;
 			tableTopMaterial->Shininess = 256.0f;
 		}
 
@@ -905,6 +970,95 @@ int main() {
 			renderer->SetMaterial(tableLegMaterial);
 		}
 
+		GameObject::Sptr wizardTowerDoors = scene->CreateGameObject("Wizard Tower Doors");
+		{
+			wizardTowerDoors->SetScale(glm::vec3(0.5f));
+			wizardTowerDoors->SetPostion(glm::vec3(-28.71f, -40.34f, -1.82f));
+			wizardTowerDoors->SetRotation(glm::vec3(0, 0, -100));
+
+			RenderComponent::Sptr renderer = wizardTowerDoors->Add<RenderComponent>();
+			renderer->SetMesh(wizardTowerDoorsMesh);
+			renderer->SetMaterial(doorMaterial);
+		}
+
+		GameObject::Sptr wizardTowerPortal = scene->CreateGameObject("Wizard Tower Portal");
+		{
+			wizardTowerPortal->SetScale(glm::vec3(0.5f));
+			wizardTowerPortal->SetPostion(glm::vec3(-28.71f, -40.34f, -1.82f));
+			wizardTowerPortal->SetRotation(glm::vec3(0, 0, -100));
+
+			RenderComponent::Sptr renderer = wizardTowerPortal->Add<RenderComponent>();
+			renderer->SetMesh(wizardTowerPortalMesh);
+			renderer->SetMaterial(portalMaterial);
+		}
+
+		GameObject::Sptr wizardTowerRoof = scene->CreateGameObject("Wizard Tower Roof");
+		{
+			wizardTowerRoof->SetScale(glm::vec3(0.5f));
+			wizardTowerRoof->SetPostion(glm::vec3(-28.71f, -40.34f, -1.82f));
+			wizardTowerRoof->SetRotation(glm::vec3(0, 0, -100));
+
+			RenderComponent::Sptr renderer = wizardTowerRoof->Add<RenderComponent>();
+			renderer->SetMesh(wizardTowerRoofMesh);
+			renderer->SetMaterial(roofMaterial);
+		}
+
+		GameObject::Sptr wizardTowerStone = scene->CreateGameObject("Wizard Tower Stone");
+		{
+			wizardTowerStone->SetPostion(glm::vec3(-28.71f, -40.34f, -1.82f));
+			wizardTowerStone->SetRotation(glm::vec3(0, 0, -100));
+			wizardTowerStone->SetScale(glm::vec3(0.5f));
+
+			RenderComponent::Sptr renderer = wizardTowerStone->Add<RenderComponent>();
+			renderer->SetMesh(wizardTowerStoneMesh);
+			renderer->SetMaterial(stoneMaterial);
+		}
+
+		GameObject::Sptr wizardTowerLightStone = scene->CreateGameObject("Wizard Tower Light Stone");
+		{
+			wizardTowerLightStone->SetScale(glm::vec3(0.5f));
+			wizardTowerLightStone->SetPostion(glm::vec3(1.967f, -2.048f, -1.030f));
+			wizardTowerLightStone->SetRotation(glm::vec3(0, 0, -100));
+
+
+			RenderComponent::Sptr renderer = wizardTowerLightStone->Add<RenderComponent>();
+			renderer->SetMesh(wizardTowerLightStoneMesh);
+			renderer->SetMaterial(lightStoneMaterial);
+		}
+
+		GameObject::Sptr wizardTowerWindow = scene->CreateGameObject("Wizard Tower Widnow");
+		{
+			wizardTowerWindow->SetScale(glm::vec3(0.5f));
+			wizardTowerWindow->SetPostion(glm::vec3(-28.71f, -40.34f, -1.82f));
+			wizardTowerWindow->SetRotation(glm::vec3(0, 0, -100));
+
+			RenderComponent::Sptr renderer = wizardTowerWindow->Add<RenderComponent>();
+			renderer->SetMesh(wizardTowerWindowsMesh);
+			renderer->SetMaterial(windowMaterial);
+		}
+
+		GameObject::Sptr wizardTowerWood = scene->CreateGameObject("Wizard Tower Wood");
+		{
+			wizardTowerWood->SetScale(glm::vec3(0.5f));
+			wizardTowerWood->SetPostion(glm::vec3(-28.71f, -40.34f, -1.82f));
+			wizardTowerWood->SetRotation(glm::vec3(0, 0, -100));
+
+			RenderComponent::Sptr renderer = wizardTowerWood->Add<RenderComponent>();
+			renderer->SetMesh(wizardTowerWoodMesh);
+			renderer->SetMaterial(dockMaterial);
+		}
+
+		GameObject::Sptr Boat = scene->CreateGameObject("Boat");
+		{
+			Boat->SetScale(glm::vec3(0.5f));
+			Boat->SetPostion(glm::vec3(0.0f, 0.0f, -0.81f));
+			Boat->SetRotation(glm::vec3(0, 0, -90));
+
+
+			RenderComponent::Sptr renderer = Boat->Add<RenderComponent>();
+			renderer->SetMesh(boatMesh);
+			renderer->SetMaterial(dockMaterial);
+		}
 
 		// Call scene awake to start up all of our components
 		scene->Window = window;
