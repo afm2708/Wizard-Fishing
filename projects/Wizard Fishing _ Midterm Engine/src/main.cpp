@@ -320,7 +320,7 @@ int main() {
 		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/MonkeyTex.png");
 
 		MeshResource::Sptr spellbookMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Spellbook.obj");
-		//Texture2D::Sptr    spellbookTex = ResourceManager::CreateAsset<Texture2D>("Textures/Spellbook.png");
+		Texture2D::Sptr    spellbookTex = ResourceManager::CreateAsset<Texture2D>("Textures/BookTex.png");
 
 		MeshResource::Sptr staffMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Staff.obj");
 		Texture2D::Sptr    staffTex = ResourceManager::CreateAsset<Texture2D>("Textures/StaffTex.png");
@@ -495,6 +495,14 @@ int main() {
 			wizardTentMaterial->Shininess = 256.0f;
 		}
 
+		Material::Sptr spellbookMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			spellbookMaterial->Name = "Wizard Tent";
+			spellbookMaterial->MatShader = scene->BaseShader;
+			spellbookMaterial->Texture = spellbookTex;
+			spellbookMaterial->Shininess = 256.0f;
+		}
+
 		// Create some lights for our scene
 		scene->Lights.resize(5);
 		scene->Lights[0].Position = glm::vec3(5.0f, -5.0f, 50.0f);
@@ -527,12 +535,12 @@ int main() {
 			// Scale up the plane
 			book->SetPostion(glm::vec3(59.0, 16.07, 2.4));
 			book->SetScale(glm::vec3(0.5F));
-			book->SetRotation(glm::vec3(90, 0, 0));
+			book->SetRotation(glm::vec3(0, 0, -90));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = book->Add<RenderComponent>();
 			renderer->SetMesh(spellbookMesh);
-			renderer->SetMaterial(dockMaterial);
+			renderer->SetMaterial(spellbookMaterial);
 
 			book->Add<PauseBehaviour>();
 
@@ -649,8 +657,8 @@ int main() {
 		GameObject::Sptr target = scene->CreateGameObject("Target");
 		{
 			// Set position in the scene
-			target->SetPostion(glm::vec3(0.0f, 0.0f, 2.0f));
-			// Scale down the plane
+			target->SetPostion(glm::vec3(0.0f, 0.0f, -1.5f));
+			target->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			target->SetScale(glm::vec3(0.5f));
 
 			// Create and attach a render component
@@ -709,7 +717,7 @@ int main() {
 			// Add a render component
 			RenderComponent::Sptr renderer = Fish->Add<RenderComponent>();
 			renderer->SetMesh(fishMesh);
-			renderer->SetMaterial(redfishMaterial);
+			renderer->SetMaterial(purplefishMaterial);
 			std::vector<Gameplay::Material::Sptr> materials;
 			materials.push_back(redfishMaterial);
 			materials.push_back(greenfishMaterial);

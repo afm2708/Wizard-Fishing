@@ -54,16 +54,16 @@ void TargetComponent::Update(float deltaTime)
             //x bounds 0, 40
             //y bounds -10, 30
             GetGameObject()->SetPostion(GetGameObject()->GetPosition() + worldMovement);
-            if (GetGameObject()->GetPosition().x < 0) GetGameObject()->SetPostion(glm::vec3(0.0f, GetGameObject()->GetPosition().y, -0.7f));
-            if (GetGameObject()->GetPosition().x > 40) GetGameObject()->SetPostion(glm::vec3(40.0f, GetGameObject()->GetPosition().y, -0.7f));
-            if (GetGameObject()->GetPosition().y < -10) GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, -10.0f, -0.7f));
-            if (GetGameObject()->GetPosition().y > 30) GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, 30.0f, -0.7f));
+            if (GetGameObject()->GetPosition().x < 0) GetGameObject()->SetPostion(glm::vec3(0.0f, GetGameObject()->GetPosition().y, -1.5f));
+            if (GetGameObject()->GetPosition().x > 40) GetGameObject()->SetPostion(glm::vec3(40.0f, GetGameObject()->GetPosition().y, -1.5f));
+            if (GetGameObject()->GetPosition().y < -10) GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, -10.0f, -1.5f));
+            if (GetGameObject()->GetPosition().y > 30) GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, 30.0f, -1.5f));
         if (GetGameObject()->GetScene()->FindObjectByName("Bobber")->Get<Casting>()->hasFinished && fishing) {
             fishing = true;
             GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, -22.0f));
         }
         else if (GetGameObject()->GetPosition().z != -0.7f) {
-            GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, -0.7f));
+            GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, -1.5f));
         }
         if (!GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->minigameActive &&
             GetGameObject()->GetScene()->FindObjectByName("Fish")->Get<FishMovement>()->hooked) {
