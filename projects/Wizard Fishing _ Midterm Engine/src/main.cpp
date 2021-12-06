@@ -61,6 +61,7 @@
 #include "Gameplay/Components/Manabar.h"
 #include "Gameplay/Components/MinigameTargetL.h"
 #include "Gameplay/Components/MinigameTargetR.h"
+#include "Gameplay/Components/StaffBehaviour.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -252,6 +253,7 @@ int main() {
 	ComponentManager::RegisterType<RigidBody>();
 	ComponentManager::RegisterType<TriggerVolume>();
 	ComponentManager::RegisterType<RotatingBehaviour>();
+	ComponentManager::RegisterType<StaffBehaviour>();
 	ComponentManager::RegisterType<JumpBehaviour>();
 	ComponentManager::RegisterType<MaterialSwapBehaviour>();
 	ComponentManager::RegisterType<WizardMovement>();
@@ -572,13 +574,16 @@ int main() {
 		GameObject::Sptr staff = scene->CreateGameObject("Staff");
 		{
 			// Scale up the plane
-			staff->SetScale(glm::vec3(2.0F));
+			staff->SetScale(glm::vec3(2.0f));
 			staff->SetRotation(glm::vec3(0, 0, 0));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = staff->Add<RenderComponent>();
 			renderer->SetMesh(staffMesh);
 			renderer->SetMaterial(staffMaterial);
+
+			staff->Add<StaffBehaviour>();
+			staff->Get<StaffBehaviour>()->cameraCords = camera->Get<SimpleCameraControl>();
 		}
 
 		GameObject::Sptr MinigamePointer = scene->CreateGameObject("Minigame Pointer");
