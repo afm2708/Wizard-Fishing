@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <Gameplay/Components/Minigame.h>
 #include <Gameplay/Components/FishMovement.h>
+#include <Gameplay/Components/MorphAnimator.h>
 
 Casting::Casting() {
 	timer = 0.0f;
@@ -51,7 +52,7 @@ void Casting::Update(float deltaTime) {
 
 
 
-	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_R) && !hasCast)
+	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_R) == GLFW_PRESS && !hasCast)
 	{
 		hasCast = true;
 		SetTarget(GetGameObject()->GetScene()->FindObjectByName("Target")->GetPosition());
@@ -68,15 +69,18 @@ void Casting::Update(float deltaTime) {
 	if (hasCast && !hasFinished)
 	{
 		GetGameObject()->SetPostion(Bezier(p0, p1, p2, time));
+		GetGameObject()->GetScene()->FindObjectByName("Staff")->Get<MorphAnimator>()->shouldAnimate = true;
 	}
 	else if (!hasCast)
 	{
 		GetGameObject()->SetPostion(GetGameObject()->GetScene()->FindObjectByName("Main Camera")->GetPosition());
+		GetGameObject()->GetScene()->FindObjectByName("Staff")->Get<MorphAnimator>()->shouldAnimate = false;
 	}
 
 	if (hasFinished)
 	{
 		GetGameObject()->SetPostion(p2);
+		GetGameObject()->GetScene()->FindObjectByName("Staff")->Get<MorphAnimator>()->shouldAnimate = false;
 	}
 }
 

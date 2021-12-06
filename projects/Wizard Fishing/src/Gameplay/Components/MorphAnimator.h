@@ -56,6 +56,7 @@ class MorphAnimator : public Gameplay::IComponent {
 		void SetFrameTime(float);
 
 		void SetFrames(const std::vector<Gameplay::MeshResource::Sptr>);
+		bool shouldAnimate = false;
 
 	protected:
 

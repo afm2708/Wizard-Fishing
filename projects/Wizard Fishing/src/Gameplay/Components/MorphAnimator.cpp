@@ -19,6 +19,7 @@ MorphAnimator::MorphAnimator()
 	data = AnimData();
 	timer = 0.0f;
 	forwards = true;
+	shouldAnimate = false;
 }
 
 void MorphAnimator::SetFrameTime(float f) {
@@ -39,21 +40,27 @@ void MorphAnimator::SetFrames(const std::vector<Gameplay::MeshResource::Sptr> lo
 
 void MorphAnimator::Update(float deltaTime)
 {
-	float t;
-	int index1;
+	if (shouldAnimate) {
+		float t;
+		int index1;
 
-	timer += deltaTime;
+		timer += deltaTime;
 
-	if (timer > data.frameTime) {
-		timer = 0.f;
+		if (timer > data.frameTime) {
+			timer = 0.0f;
 
-		data.index0 = (data.index0 < (data.animFrames.size() - 1)) ? data.index0 + 1 : 0;
+			data.index0 = (data.index0 < (data.animFrames.size() - 1)) ? data.index0 + 1 : 0;
+		}
+
+		t = timer / data.frameTime;
+		index1 = ((data.index0 + 1) >= data.animFrames.size()) ? 0 : (data.index0 + 1);
+
+		GetGameObject()->Get<MorphMeshRenderer>()->UpdateData(data.animFrames[data.index0], data.animFrames[index1], t);
 	}
-
-	t = timer / data.frameTime;
-	index1 = ((data.index0 + 1) >= data.animFrames.size()) ? 0 : (data.index0 + 1);
-
-	GetGameObject()->Get<MorphMeshRenderer>()->UpdateData(data.animFrames[data.index0], data.animFrames[index1], t);
+	else {
+		data.index0 = 0;
+		GetGameObject()->Get<MorphMeshRenderer>()->UpdateData(data.animFrames[data.index0], data.animFrames[data.index0], 0);
+	}
 }
 
 void MorphAnimator::RenderImGui()
