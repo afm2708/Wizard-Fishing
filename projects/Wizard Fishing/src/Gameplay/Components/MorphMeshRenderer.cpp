@@ -20,8 +20,8 @@ void MorphMeshRenderer::UpdateData(const Gameplay::MeshResource::Sptr &frame0, c
 	const VertexBuffer::Sptr vboPos = frame1->Mesh->GetBufferBinding(AttribUsage::Position)->Buffer;
 	const VertexBuffer::Sptr vboNorm = frame1->Mesh->GetBufferBinding(AttribUsage::Normal)->Buffer;
 	const VertexArrayObject::VertexDeclaration dec = frame1->Mesh->GetVDecl();
-	std::vector<BufferAttribute> positionBuffer {BufferAttribute(4, 3, AttributeType::Float, dec.at(0).Stride, dec.at(0).Offset, AttribUsage::Position) };
-	std::vector<BufferAttribute> normalBuffer{ BufferAttribute(5, 3, AttributeType::Float, dec.at(2).Stride, dec.at(2).Offset, AttribUsage::Normal) };
+	std::vector<BufferAttribute> positionBuffer{BufferAttribute(4, 3, AttributeType::Float, dec.at(0).Stride, dec.at(0).Offset, AttribUsage::Position) };
+	std::vector<BufferAttribute> normalBuffer{BufferAttribute(5, 3, AttributeType::Float, dec.at(2).Stride, dec.at(2).Offset, AttribUsage::Normal) };
 	vao->AddVertexBuffer(vboPos, positionBuffer);
 	vao->AddVertexBuffer(vboNorm, normalBuffer);
 

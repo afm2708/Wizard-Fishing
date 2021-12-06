@@ -354,6 +354,8 @@ int main() {
 		Texture2D::Sptr    spellbookTex = ResourceManager::CreateAsset<Texture2D>("Textures/BookTex.png");
 
 		MeshResource::Sptr staffMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Staff.obj");
+		MeshResource::Sptr staffAnim1Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/Staff2.obj");
+		MeshResource::Sptr staffAnim2Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/Staff3.obj");
 		Texture2D::Sptr    staffTex = ResourceManager::CreateAsset<Texture2D>("Textures/StaffTex.png");
 
 		MeshResource::Sptr tableLeg1Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/TableLeg1.obj");
@@ -626,7 +628,7 @@ int main() {
 		Material::Sptr staffMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			staffMaterial->Name = "Staff";
-			staffMaterial->MatShader = basicShader;
+			staffMaterial->MatShader = morphShader;
 			staffMaterial->Texture = staffTex;
 			staffMaterial->Shininess = 256.0f;
 		}
@@ -769,6 +771,14 @@ int main() {
 
 			staff->Add<StaffBehaviour>();
 			staff->Get<StaffBehaviour>()->cameraCords = camera->Get<SimpleCameraControl>();
+			staff->Add<MorphMeshRenderer>();
+			staff->Add<MorphAnimator>();
+			staff->Get<MorphAnimator>()->SetFrameTime(0.5f);
+			std::vector<MeshResource::Sptr> frames;
+			frames.push_back(staffMesh);
+			frames.push_back(staffAnim1Mesh);
+			frames.push_back(staffAnim2Mesh);
+			staff->Get<MorphAnimator>()->SetFrames(frames);
 		}
 
 		GameObject::Sptr manaOutline = scene->CreateGameObject("Mana Outline");
@@ -919,6 +929,7 @@ int main() {
 			frames.push_back(fishMesh);
 			frames.push_back(fishWiggle2Mesh);
 			Fish->Get<MorphAnimator>()->SetFrames(frames);
+			Fish->Get<MorphAnimator>()->shouldAnimate = true;
 		}
 
 
