@@ -21,7 +21,7 @@ public:
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
-	bool minigameActive = false, pressed;
+	bool minigameActive = false, pressed = false;
 	float middleX;
 	float middleY;
 	float rotation;

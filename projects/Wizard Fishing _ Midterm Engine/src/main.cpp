@@ -300,6 +300,8 @@ int main() {
 		Texture2D::Sptr	   dockTex = ResourceManager::CreateAsset<Texture2D>("Textures/DockTex.png");
 
 		MeshResource::Sptr fishMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Fish.obj");
+		MeshResource::Sptr fishWiggle1Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/FishWiggle1.obj");
+		MeshResource::Sptr fishWiggle2Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/FishWiggle2.obj");
 		Texture2D::Sptr	   redfishTex = ResourceManager::CreateAsset<Texture2D>("Textures/RedFishTex.png");
 		Texture2D::Sptr	   greenfishTex = ResourceManager::CreateAsset<Texture2D>("Textures/GreenFishTex.png");
 		Texture2D::Sptr	   purplefishTex = ResourceManager::CreateAsset<Texture2D>("Textures/PurpleFishTex.png");
@@ -320,7 +322,7 @@ int main() {
 		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/MonkeyTex.png");
 
 		MeshResource::Sptr spellbookMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Spellbook.obj");
-		Texture2D::Sptr    spellbookTex = ResourceManager::CreateAsset<Texture2D>("Textures/BookTex.png");
+		//Texture2D::Sptr    spellbookTex = ResourceManager::CreateAsset<Texture2D>("Textures/Spellbook.png");
 
 		MeshResource::Sptr staffMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Staff.obj");
 		Texture2D::Sptr    staffTex = ResourceManager::CreateAsset<Texture2D>("Textures/StaffTex.png");
@@ -495,14 +497,6 @@ int main() {
 			wizardTentMaterial->Shininess = 256.0f;
 		}
 
-		Material::Sptr spellbookMaterial = ResourceManager::CreateAsset<Material>();
-		{
-			spellbookMaterial->Name = "Wizard Tent";
-			spellbookMaterial->MatShader = scene->BaseShader;
-			spellbookMaterial->Texture = spellbookTex;
-			spellbookMaterial->Shininess = 256.0f;
-		}
-
 		// Create some lights for our scene
 		scene->Lights.resize(5);
 		scene->Lights[0].Position = glm::vec3(5.0f, -5.0f, 50.0f);
@@ -535,12 +529,12 @@ int main() {
 			// Scale up the plane
 			book->SetPostion(glm::vec3(59.0, 16.07, 2.4));
 			book->SetScale(glm::vec3(0.5F));
-			book->SetRotation(glm::vec3(0, 0, -90));
+			book->SetRotation(glm::vec3(90, 0, 0));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = book->Add<RenderComponent>();
 			renderer->SetMesh(spellbookMesh);
-			renderer->SetMaterial(spellbookMaterial);
+			renderer->SetMaterial(dockMaterial);
 
 			book->Add<PauseBehaviour>();
 
@@ -657,8 +651,8 @@ int main() {
 		GameObject::Sptr target = scene->CreateGameObject("Target");
 		{
 			// Set position in the scene
-			target->SetPostion(glm::vec3(0.0f, 0.0f, -1.5f));
-			target->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			target->SetPostion(glm::vec3(0.0f, 0.0f, 2.0f));
+			// Scale down the plane
 			target->SetScale(glm::vec3(0.5f));
 
 			// Create and attach a render component
@@ -717,7 +711,7 @@ int main() {
 			// Add a render component
 			RenderComponent::Sptr renderer = Fish->Add<RenderComponent>();
 			renderer->SetMesh(fishMesh);
-			renderer->SetMaterial(purplefishMaterial);
+			renderer->SetMaterial(redfishMaterial);
 			std::vector<Gameplay::Material::Sptr> materials;
 			materials.push_back(redfishMaterial);
 			materials.push_back(greenfishMaterial);

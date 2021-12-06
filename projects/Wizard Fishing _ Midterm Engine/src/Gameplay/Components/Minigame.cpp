@@ -78,7 +78,7 @@ void Minigame::Update(float deltaTime)
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
             moveX = 0.0f;
         }
-        if (glfwGetKey(_window, GLFW_KEY_SPACE && !pressed)
+        if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS && !pressed
             && flip >= 14.0f + 2.0 * dif
             && flip <= 26.0f - 2.0 * dif) {
             minigameActive = false;
@@ -90,7 +90,7 @@ void Minigame::Update(float deltaTime)
             moveY = 0.0f;
             pressed = true;
         }
-        else if(glfwGetKey(_window, GLFW_KEY_SPACE) && !pressed) {
+        else if(glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS && !pressed) {
             mana -= 40;
             pressed = true;
         }
