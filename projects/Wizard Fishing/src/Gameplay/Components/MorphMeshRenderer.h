@@ -26,6 +26,6 @@ public:
 	static MorphMeshRenderer::Sptr FromJson(const nlohmann::json& blob);
 
 protected:
-
+	
 	GLFWwindow* _window;
 };

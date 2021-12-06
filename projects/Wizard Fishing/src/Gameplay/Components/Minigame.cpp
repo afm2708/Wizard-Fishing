@@ -68,11 +68,11 @@ void Minigame::Update(float deltaTime)
             }
 
             //Uses trig to find how to move each axis
-            moveX += moveSpeedX * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
-            moveY += moveSpeedY * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
+            moveX += moveSpeedX;
+            moveY += moveSpeedY;
     
             GetGameObject()->SetRotation(glm::vec3(90.0f, 0, rotation));
-            GetGameObject()->SetPostion(glm::vec3(middleX + moveX, middleY + moveY, 4.0f));
+            GetGameObject()->SetPostion(glm::vec3(middleX + moveX * (cos((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f))), middleY + moveY * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f))), 4.0f));
         }
         else {
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
