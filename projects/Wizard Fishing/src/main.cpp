@@ -403,6 +403,8 @@ int main() {
 		MeshResource::Sptr wizardTowerWoodMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerWood.obj");
 		MeshResource::Sptr wizardTowerLightStoneMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerLightStone.obj");
 		MeshResource::Sptr boatMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Boat.obj");
+		MeshResource::Sptr boat1Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/Boat2.obj");
+		MeshResource::Sptr boat2Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/Boat3.obj");
 
 		Texture2D::Sptr    doorTex = ResourceManager::CreateAsset<Texture2D>("Textures/DoorTex.png");
 		Texture2D::Sptr    portalTex = ResourceManager::CreateAsset<Texture2D>("Textures/PortalTex.png");
@@ -551,6 +553,14 @@ int main() {
 			dockMaterial->MatShader = basicShader;
 			dockMaterial->Texture = dockTex;
 			dockMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr boatMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			boatMaterial->Name = "Boat";
+			boatMaterial->MatShader = morphShader;
+			boatMaterial->Texture = dockTex;
+			boatMaterial->Shininess = 2.0f;
 		}
 
 		Material::Sptr redfishMaterial = ResourceManager::CreateAsset<Material>();
@@ -1149,7 +1159,17 @@ int main() {
 
 			RenderComponent::Sptr renderer = Boat->Add<RenderComponent>();
 			renderer->SetMesh(boatMesh);
-			renderer->SetMaterial(dockMaterial);
+			renderer->SetMaterial(boatMaterial);
+			Boat->Add<MorphMeshRenderer>();
+			Boat->Add<MorphAnimator>();
+			Boat->Get<MorphAnimator>()->SetFrameTime(3.0f);
+			std::vector<MeshResource::Sptr> frames;
+			frames.push_back(boatMesh);
+			frames.push_back(boat1Mesh);
+			frames.push_back(boatMesh);
+			frames.push_back(boat2Mesh);
+			Boat->Get<MorphAnimator>()->SetFrames(frames);
+			Boat->Get<MorphAnimator>()->shouldAnimate = true;
 		}
 
 		GameObject::Sptr fire = scene->CreateGameObject("Fire");
