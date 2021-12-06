@@ -387,8 +387,10 @@ int main() {
 		MeshResource::Sptr fireMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Fire.obj");
 		Texture2D::Sptr    fireTex = ResourceManager::CreateAsset<Texture2D>("Textures/FireTex.png");
 
-		MeshResource::Sptr treeMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Tree.obj");
+		MeshResource::Sptr forestMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Forrest.obj");
+		MeshResource::Sptr forest2Mesh = ResourceManager::CreateAsset<MeshResource>("Objects/Forrest2.obj");
 		Texture2D::Sptr    treeTex = ResourceManager::CreateAsset<Texture2D>("Textures/TreeTex.png");
+		Texture2D::Sptr    tree2Tex = ResourceManager::CreateAsset<Texture2D>("Textures/Tree2Tex.png");
 
 
 		MeshResource::Sptr wizardTowerDoorsMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerDoors.obj");
@@ -506,6 +508,15 @@ int main() {
 			treeMaterial->MatShader = basicShader;
 			treeMaterial->Texture = treeTex;
 			treeMaterial->Shininess = 2.0f;
+		}
+
+
+		Material::Sptr tree2Material = ResourceManager::CreateAsset<Material>();
+		{
+			tree2Material->Name = "Tree";
+			tree2Material->MatShader = basicShader;
+			tree2Material->Texture = tree2Tex;
+			tree2Material->Shininess = 2.0f;
 		}
 
 		Material::Sptr manaMaterial = ResourceManager::CreateAsset<Material>();
@@ -1142,18 +1153,29 @@ int main() {
 			renderer->SetMaterial(fireMaterial);
 		}
 
-		/*GameObject::Sptr tree = scene->CreateGameObject("tree");
+		GameObject::Sptr forest1 = scene->CreateGameObject("forest1");
 		{
-			tree->SetScale(glm::vec3(0.5f));
-			tree->SetPostion(glm::vec3(0.0f, 0.0f, -0.6f));
-			tree->SetRotation(glm::vec3(0, 0, -90));
+			forest1->SetScale(glm::vec3(0.5f));
+			forest1->SetPostion(glm::vec3(0.0f, 0.0f, -0.6f));
+			forest1->SetRotation(glm::vec3(0, 0, -90));
 
 
-			RenderComponent::Sptr renderer = tree->Add<RenderComponent>();
-			renderer->SetMesh(treeMesh);
+			RenderComponent::Sptr renderer = forest1->Add<RenderComponent>();
+			renderer->SetMesh(forestMesh);
 			renderer->SetMaterial(treeMaterial);
-		}*/
+		}
 
+		GameObject::Sptr forest2 = scene->CreateGameObject("forest2");
+		{
+			forest2->SetScale(glm::vec3(0.5f));
+			forest2->SetPostion(glm::vec3(0.0f, 0.0f, -0.6f));
+			forest2->SetRotation(glm::vec3(0, 0, -90));
+
+
+			RenderComponent::Sptr renderer = forest2->Add<RenderComponent>();
+			renderer->SetMesh(forest2Mesh);
+			renderer->SetMaterial(tree2Material);
+		}
 		GameObject::Sptr title = scene->CreateGameObject("Title");
 		{
 			title->SetScale(glm::vec3(0.5f));

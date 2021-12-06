@@ -27,7 +27,7 @@ void PauseBehaviour::Update(float deltaTime) {
 			else
 			{
 				GetGameObject()->SetPostion(glm::vec3(59.0, 16.07, 2.4));
-				GetGameObject()->SetRotation(glm::vec3(0, 0, 0));
+				GetGameObject()->SetRotation(glm::vec3(0, 0, -90));
 				isPaused = false;
 				pauseClock += 1;
 			}
