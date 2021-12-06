@@ -372,9 +372,6 @@ int main() {
 		MeshResource::Sptr wizardMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard.obj");
 		//Texture2D::Sptr    wizardTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTex.png");
 
-		MeshResource::Sptr wizardTentMesh = ResourceManager::CreateAsset<MeshResource>("Objects/WizardTent.obj");
-		Texture2D::Sptr    wizardTentTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTentTex.png");
-
 		MeshResource::Sptr titleMesh = ResourceManager::CreateAsset<MeshResource>("Objects/TitleScreen.obj");
 		Texture2D::Sptr    titleTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardFishingTitleTex.png");
 
@@ -673,13 +670,6 @@ int main() {
 			waterMaterial->Shininess = 500.0f;
 		}
 
-		Material::Sptr wizardTentMaterial = ResourceManager::CreateAsset<Material>();
-		{
-			wizardTentMaterial->Name = "Wizard Tent";
-			wizardTentMaterial->MatShader = basicShader;
-			wizardTentMaterial->Texture = wizardTentTex;
-			wizardTentMaterial->Shininess = 256.0f;
-		}
 		// Create some lights for our scene
 		scene->Lights.resize(5);
 		scene->Lights[0].Position = glm::vec3(5.0f, -5.0f, 50.0f);
@@ -965,20 +955,6 @@ int main() {
 			RenderComponent::Sptr renderer = water->Add<RenderComponent>();
 			renderer->SetMesh(waterMesh);
 			renderer->SetMaterial(waterMaterial);
-
-		}
-
-		GameObject::Sptr wizardTent = scene->CreateGameObject("Wizard Tent");
-		{
-			// Scale up the plane
-			wizardTent->SetPostion(glm::vec3(0.0, 0.0, -0.370));
-			wizardTent->SetScale(glm::vec3(0.5F));
-			wizardTent->SetRotation(glm::vec3(0, 0, 90));
-
-			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = wizardTent->Add<RenderComponent>();
-			renderer->SetMesh(wizardTentMesh);
-			renderer->SetMaterial(wizardTentMaterial);
 
 		}
 
