@@ -9,6 +9,7 @@
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
 #include <Gameplay/Components/FishMovement.h>
+#include <Gameplay/Components/SimpleCameraControl.h>
 #include <Gameplay/Components/Casting.h>
 
 ManaBarOutline::ManaBarOutline() :
@@ -42,8 +43,10 @@ void ManaBarOutline::Update(float deltaTime)
     //my head + how far from my head + cos theta
     middleZ = (cameraCords->GetGameObject()->GetPosition().z) - 1.5f * (cos(((cameraCords->GetGameObject()->GetRotationEuler().x + 40) * 3.141f / 180.0f)));
 
-    GetGameObject()->SetRotation(glm::vec3(-rotationX, 0, rotationZ -180.0f));
-    GetGameObject()->SetPostion(glm::vec3(middleX, middleY, middleZ));
+    if (ManaBarOutline::cameraCords->gameStart) {
+        GetGameObject()->SetRotation(glm::vec3(-rotationX, 0, rotationZ - 180.0f));
+        GetGameObject()->SetPostion(glm::vec3(middleX, middleY, middleZ));
+    }
 }
 
 void ManaBarOutline::RenderImGui()

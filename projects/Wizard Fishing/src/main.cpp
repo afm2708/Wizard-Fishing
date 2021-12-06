@@ -378,6 +378,12 @@ int main() {
 		MeshResource::Sptr manaOutlineMesh = ResourceManager::CreateAsset<MeshResource>("Objects/ManaBar.obj");
 		Texture2D::Sptr    manaOutlineTex = ResourceManager::CreateAsset<Texture2D>("Textures/ManaBarOutlineTex.png");
 
+		MeshResource::Sptr fireMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Fire.obj");
+		Texture2D::Sptr    fireTex = ResourceManager::CreateAsset<Texture2D>("Textures/FireTex.png");
+
+		MeshResource::Sptr treeMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Tree.obj");
+		Texture2D::Sptr    treeTex = ResourceManager::CreateAsset<Texture2D>("Textures/TreeTex.png");
+
 
 		MeshResource::Sptr wizardTowerDoorsMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerDoors.obj");
 		MeshResource::Sptr wizardTowerPortalMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerPortal.obj");
@@ -478,6 +484,22 @@ int main() {
 			boxMaterial->MatShader = basicShader;
 			boxMaterial->Texture = boxTex;
 			boxMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr fireMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			fireMaterial->Name = "Fire";
+			fireMaterial->MatShader = basicShader;
+			fireMaterial->Texture = fireTex;
+			fireMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr treeMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			treeMaterial->Name = "Tree";
+			treeMaterial->MatShader = basicShader;
+			treeMaterial->Texture = treeTex;
+			treeMaterial->Shininess = 2.0f;
 		}
 
 		Material::Sptr manaMaterial = ResourceManager::CreateAsset<Material>();
@@ -825,7 +847,7 @@ int main() {
 		GameObject::Sptr target = scene->CreateGameObject("Target");
 		{
 			// Set position in the scene
-			target->SetPostion(glm::vec3(0.0f, 0.0f, -1.5f));
+			target->SetPostion(glm::vec3(39.0f, 16.0f, -1.5f));
 			target->SetScale(glm::vec3(1.0F, 0.5F, 1.0f));
 			target->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 
@@ -852,30 +874,6 @@ int main() {
 			Bobber->Get<Casting>()->pause = book->Get<PauseBehaviour>();
 			Bobber->Get<Casting>()->target = target->Get<TargetComponent>();
 		}
-
-		/*GameObject::Sptr monkey1 = scene->CreateGameObject("Monkey 1");
-		{
-			// Set position in the scene
-			monkey1->SetPostion(glm::vec3(1.5f, 0.0f, 1.0f));
-
-			// Add some behaviour that relies on the physics body
-			monkey1->Add<JumpBehaviour>();
-
-			// Create and attach a renderer for the monkey
-			RenderComponent::Sptr renderer = monkey1->Add<RenderComponent>();
-			renderer->SetMesh(monkeyMesh);
-			renderer->SetMaterial(monkeyMaterial);
-
-			// Add a dynamic rigid body to this monkey
-			RigidBody::Sptr physics = monkey1->Add<RigidBody>(RigidBodyType::Dynamic);
-			physics->AddCollider(ConvexMeshCollider::Create());
-
-
-			// We'll add a behaviour that will interact with our trigger volumes
-			MaterialSwapBehaviour::Sptr triggerInteraction = monkey1->Add<MaterialSwapBehaviour>();
-			triggerInteraction->EnterMaterial = boxMaterial;
-			triggerInteraction->ExitMaterial = monkeyMaterial;
-		}*/
 
 		GameObject::Sptr Fish = scene->CreateGameObject("Fish");
 		{
@@ -928,15 +926,6 @@ int main() {
 			PointerTargetR->Get<MinigameTargetR>()->pause = book->Get<PauseBehaviour>();
 			PointerTargetR->Get<MinigameTargetR>()->minigame = MinigamePointer->Get<Minigame>();
 		}
-
-		// Create a trigger volume for testing how we can detect collisions with objects!
-		/*GameObject::Sptr trigger = scene->CreateGameObject("Trigger");
-		{
-			TriggerVolume::Sptr volume = trigger->Add<TriggerVolume>();
-			BoxCollider::Sptr collider = BoxCollider::Create(glm::vec3(3.0f, 3.0f, 1.0f));
-			collider->SetPosition(glm::vec3(0.0f, 0.0f, 0.5f));
-			volume->AddCollider(collider);
-		}*/
 
 
 		GameObject::Sptr water = scene->CreateGameObject("Water");
@@ -1125,6 +1114,30 @@ int main() {
 			renderer->SetMesh(boatMesh);
 			renderer->SetMaterial(dockMaterial);
 		}
+
+		GameObject::Sptr fire = scene->CreateGameObject("Fire");
+		{
+			fire->SetScale(glm::vec3(0.5f));
+			fire->SetPostion(glm::vec3(0.0f, 0.0f, -0.6f));
+			fire->SetRotation(glm::vec3(0, 0, -90));
+
+
+			RenderComponent::Sptr renderer = fire->Add<RenderComponent>();
+			renderer->SetMesh(fireMesh);
+			renderer->SetMaterial(fireMaterial);
+		}
+
+		/*GameObject::Sptr tree = scene->CreateGameObject("tree");
+		{
+			tree->SetScale(glm::vec3(0.5f));
+			tree->SetPostion(glm::vec3(0.0f, 0.0f, -0.6f));
+			tree->SetRotation(glm::vec3(0, 0, -90));
+
+
+			RenderComponent::Sptr renderer = tree->Add<RenderComponent>();
+			renderer->SetMesh(treeMesh);
+			renderer->SetMaterial(treeMaterial);
+		}*/
 
 		GameObject::Sptr title = scene->CreateGameObject("Title");
 		{

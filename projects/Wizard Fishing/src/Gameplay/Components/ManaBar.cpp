@@ -10,6 +10,7 @@
 #include "Utils/ImGuiHelper.h"
 #include <Gameplay/Components/FishMovement.h>
 #include <Gameplay/Components/Minigame.h>
+#include <Gameplay/Components/SimpleCameraControl.h>
 #include <Gameplay/Components/Casting.h>
 
 ManaBar::ManaBar() :
@@ -43,9 +44,11 @@ void ManaBar::Update(float deltaTime)
     //my head + how far from my head + cos theta
     middleZ = (cameraCords->GetGameObject()->GetPosition().z) - 1.5f * (cos(((cameraCords->GetGameObject()->GetRotationEuler().x + 40) * 3.141f / 180.0f)));
 
-    GetGameObject()->SetRotation(glm::vec3(-rotationX, 0.0f, rotationZ - 180.0f));
-    GetGameObject()->SetPostion(glm::vec3(middleX, middleY, middleZ));
-    GetGameObject()->SetScale(glm::vec3(0.00025 * GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->mana, 0.05f, 0.05f));
+    if (ManaBar::cameraCords->gameStart) {
+        GetGameObject()->SetRotation(glm::vec3(-rotationX, 0.0f, rotationZ - 180.0f));
+        GetGameObject()->SetPostion(glm::vec3(middleX, middleY, middleZ));
+        GetGameObject()->SetScale(glm::vec3(0.00025 * GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->mana, 0.05f, 0.05f));
+    }
 }
 
 void ManaBar::RenderImGui()
