@@ -19,6 +19,10 @@ void RenderComponent::SetMesh(const Gameplay::MeshResource::Sptr& mesh) {
 	_mesh = mesh;
 }
 
+void RenderComponent::SetVao(VertexArrayObject::Sptr& mesh) {
+	_mesh->Mesh = mesh;
+}
+
 const Gameplay::MeshResource::Sptr& RenderComponent::GetMeshResource() const {
 	return _mesh;
 }

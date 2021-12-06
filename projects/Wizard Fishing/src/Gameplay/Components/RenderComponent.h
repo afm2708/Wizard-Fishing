@@ -35,6 +35,7 @@ public:
 	/// </summary>
 	/// <param name="mesh">The mesh resource containing info about the model to be rendered</param>
 	void SetMesh(const Gameplay::MeshResource::Sptr& mesh);
+	void SetVao(VertexArrayObject::Sptr& mesh);
 	/// <summary>
 	/// Sets this render component's material, which will be used to feed material parameters to the appropriate
 	/// shader, and ensure that the shader is bound when this object should be drawn

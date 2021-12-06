@@ -311,6 +311,12 @@ int main() {
 			{ ShaderPartType::Vertex, "shaders/vertex_shader.glsl" },
 			{ ShaderPartType::Fragment, "shaders/frag_blinn_phong_textured.glsl" }
 		});
+
+		Shader::Sptr morphShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/morph_shader.glsl" },
+			{ ShaderPartType::Fragment, "shaders/frag_blinn_phong_textured.glsl" }
+		});
+
 		MeshResource::Sptr bobberMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Bobber.obj");
 		Texture2D::Sptr	   bobberTex = ResourceManager::CreateAsset<Texture2D>("Textures/BobberTex.png");
 
@@ -537,7 +543,7 @@ int main() {
 		Material::Sptr redfishMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			redfishMaterial->Name = "Red Fish";
-			redfishMaterial->MatShader = basicShader;
+			redfishMaterial->MatShader = morphShader;
 			redfishMaterial->Texture = redfishTex;
 			redfishMaterial->Shininess = 256.0f;
 		}
@@ -545,7 +551,7 @@ int main() {
 		Material::Sptr greenfishMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			greenfishMaterial->Name = "Green Fish";
-			greenfishMaterial->MatShader = basicShader;
+			greenfishMaterial->MatShader = morphShader;
 			greenfishMaterial->Texture = greenfishTex;
 			greenfishMaterial->Shininess = 256.0f;
 		}
@@ -553,7 +559,7 @@ int main() {
 		Material::Sptr purplefishMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			purplefishMaterial->Name = "Purple Fish";
-			purplefishMaterial->MatShader = basicShader;
+			purplefishMaterial->MatShader = morphShader;
 			purplefishMaterial->Texture = purplefishTex;
 			purplefishMaterial->Shininess = 256.0f;
 		}
@@ -893,6 +899,15 @@ int main() {
 			Fish->Get<FishMovement>()->pause = book->Get<PauseBehaviour>();
 			lerp->SetSpeed(6);
 			lerp->SetMats(materials);
+			Fish->Add<MorphMeshRenderer>();
+			Fish->Add<MorphAnimator>();
+			Fish->Get<MorphAnimator>()->SetFrameTime(1.0f);
+			std::vector<MeshResource::Sptr> frames;
+			frames.push_back(fishMesh);
+			frames.push_back(fishWiggle1Mesh);
+			frames.push_back(fishMesh);
+			frames.push_back(fishWiggle2Mesh);
+			Fish->Get<MorphAnimator>()->SetFrames(frames);
 		}
 
 
@@ -1329,6 +1344,9 @@ int main() {
 			shader->SetUniformMatrix("u_Model", object->GetTransform());
 			shader->SetUniformMatrix("u_NormalMatrix", glm::mat3(glm::transpose(glm::inverse(object->GetTransform()))));
 
+			if (object->Has<MorphMeshRenderer>()) {
+				shader->SetUniform("t", object->Get<MorphMeshRenderer>()->t);
+			}
 			// Draw the object
 			renderable->GetMesh()->Draw();
 		});
