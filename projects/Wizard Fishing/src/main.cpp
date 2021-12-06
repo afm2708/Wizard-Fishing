@@ -901,7 +901,7 @@ int main() {
 			lerp->SetMats(materials);
 			Fish->Add<MorphMeshRenderer>();
 			Fish->Add<MorphAnimator>();
-			Fish->Get<MorphAnimator>()->SetFrameTime(1.0f);
+			Fish->Get<MorphAnimator>()->SetFrameTime(0.4f);
 			std::vector<MeshResource::Sptr> frames;
 			frames.push_back(fishMesh);
 			frames.push_back(fishWiggle1Mesh);
