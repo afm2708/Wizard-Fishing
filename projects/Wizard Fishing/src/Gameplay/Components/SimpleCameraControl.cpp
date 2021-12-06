@@ -95,6 +95,10 @@ void SimpleCameraControl::Update(float deltaTime)
 					GetGameObject()->SetPostion(GetGameObject()->GetPosition() + worldMovement);
 					if (GetGameObject()->GetPosition().z != 4) {
 						GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, 4.0f));
+						if (GetGameObject()->GetPosition().x < 45) GetGameObject()->SetPostion(glm::vec3(45.0f, GetGameObject()->GetPosition().y, 4.0f));
+						if (GetGameObject()->GetPosition().x > 57) GetGameObject()->SetPostion(glm::vec3(57.0f, GetGameObject()->GetPosition().y, 4.0f));
+						if (GetGameObject()->GetPosition().y < 13) GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, 13.0f, 4.0f));
+						if (GetGameObject()->GetPosition().y > 19) GetGameObject()->SetPostion(glm::vec3(GetGameObject()->GetPosition().x, 19.0f, 4.0f));
 					}
 					player->GetGameObject()->SetPostion(GetGameObject()->GetPosition());
 					player->GetGameObject()->SetRotation(GetGameObject()->GetRotation());
