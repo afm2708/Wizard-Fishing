@@ -1,5 +1,5 @@
 
-#include "Gameplay/Components/ManaBar.h"
+#include "Gameplay/Components/ManaBarOutline.h"
 #include <GLFW/glfw3.h>
 #define  GLM_SWIZZLE
 #include <GLM/gtc/quaternion.hpp>
@@ -9,10 +9,9 @@
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
 #include <Gameplay/Components/FishMovement.h>
-#include <Gameplay/Components/Minigame.h>
 #include <Gameplay/Components/Casting.h>
 
-ManaBar::ManaBar() :
+ManaBarOutline::ManaBarOutline() :
     IComponent(),
     middleX(),
     middleY(),
@@ -21,13 +20,13 @@ ManaBar::ManaBar() :
     rotationZ()
 {}
 
-ManaBar::~ManaBar() = default;
+ManaBarOutline::~ManaBarOutline() = default;
 
-void ManaBar::Awake() {
-    _window = GetGameObject()->GetScene()->Window;
+void ManaBarOutline::Awake() {
+	_window = GetGameObject()->GetScene()->Window;
 }
 
-void ManaBar::Update(float deltaTime)
+void ManaBarOutline::Update(float deltaTime)
 {
 
     //calculates the rotation on the X axis
@@ -43,21 +42,20 @@ void ManaBar::Update(float deltaTime)
     //my head + how far from my head + cos theta
     middleZ = (cameraCords->GetGameObject()->GetPosition().z) - 1.5f * (cos(((cameraCords->GetGameObject()->GetRotationEuler().x + 40) * 3.141f / 180.0f)));
 
-    GetGameObject()->SetRotation(glm::vec3(-rotationX, 0.0f, rotationZ - 180.0f));
+    GetGameObject()->SetRotation(glm::vec3(-rotationX, 0, rotationZ -180.0f));
     GetGameObject()->SetPostion(glm::vec3(middleX, middleY, middleZ));
-    GetGameObject()->SetScale(glm::vec3(0.00025 * GetGameObject()->GetScene()->FindObjectByName("Minigame Pointer")->Get<Minigame>()->mana, 0.05f, 0.05f));
 }
 
-void ManaBar::RenderImGui()
+void ManaBarOutline::RenderImGui()
 {
 }
 
-nlohmann::json ManaBar::ToJson() const {
-    return {
-    };
+nlohmann::json ManaBarOutline::ToJson() const {
+	return {
+	};
 }
 
-ManaBar::Sptr ManaBar::FromJson(const nlohmann::json & blob) {
-    ManaBar::Sptr result = std::make_shared<ManaBar>();
-    return result;
+ManaBarOutline::Sptr ManaBarOutline::FromJson(const nlohmann::json& blob) {
+    ManaBarOutline::Sptr result = std::make_shared<ManaBarOutline>();
+	return result;
 }

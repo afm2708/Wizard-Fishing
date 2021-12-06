@@ -8,6 +8,7 @@
 #include "Gameplay/Scene.h"
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
+#include "Gameplay/Components/SimpleCameraControl.h"
 #include <Gameplay/Components/FishMovement.h>
 #include <Gameplay/Components/Casting.h>
 
@@ -25,6 +26,7 @@ Minigame::Minigame() :
     pressed(false),
     rotation(),
     dif(),
+    mana(),
     leftEdge(),
     rightEdge()
 {}
@@ -37,6 +39,12 @@ void Minigame::Awake() {
 
 void Minigame::Update(float deltaTime)
 {
+    //basically immediately sets the mana to max so at the main menu so that the mana bar can immediately have a value
+    if (!(Minigame::cameraCords->gameStart)) {
+        mana = maxMana;
+    }
+
+
     //my head + how far from my head + cos theta
     middleX = cameraCords->GetGameObject()->GetPosition().x - 2.0f * (sin((cameraCords->GetGameObject()->GetRotationEuler().z * 3.141f / 180.0f)));
     //my head + how far from my head + sin theta

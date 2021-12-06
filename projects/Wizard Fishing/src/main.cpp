@@ -59,6 +59,7 @@
 #include "Gameplay/Components/Casting.h"
 #include "Gameplay/Components/PauseBehaviour.h"
 #include "Gameplay/Components/Manabar.h"
+#include "Gameplay/Components/ManabarOutline.h"
 #include "Gameplay/Components/MinigameTargetL.h"
 #include "Gameplay/Components/MinigameTargetR.h"
 #include "Gameplay/Components/StaffBehaviour.h"
@@ -272,6 +273,7 @@ int main() {
 	ComponentManager::RegisterType<Casting>();
 	ComponentManager::RegisterType<PauseBehaviour>();
 	ComponentManager::RegisterType<ManaBar>();
+	ComponentManager::RegisterType<ManaBarOutline>();
 	ComponentManager::RegisterType<MinigameTargetL>();
 	ComponentManager::RegisterType<MinigameTargetR>();
 	ComponentManager::RegisterType<MorphAnimator>();
@@ -336,8 +338,8 @@ int main() {
 		MeshResource::Sptr minigamePointerMesh = ResourceManager::CreateAsset<MeshResource>("Objects/MinigamePointer.obj");
 		Texture2D::Sptr    minigamePointerTex = ResourceManager::CreateAsset<Texture2D>("Textures/MinigamePointerTex.png");
 
-		MeshResource::Sptr minigameTargetMesh = ResourceManager::CreateAsset<MeshResource>("Objects/plane.obj");
-		Texture2D::Sptr    minigameTargetTex = ResourceManager::CreateAsset<Texture2D>("Textures/GrassTex.png");
+		MeshResource::Sptr minigameTargetMesh = ResourceManager::CreateAsset<MeshResource>("Objects/MinigameTarget.obj");
+		Texture2D::Sptr    minigameTargetTex = ResourceManager::CreateAsset<Texture2D>("Textures/MinigamePointerTargetTex.png");
 
 		MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Monkey.obj");
 		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("Textures/MonkeyTex.png");
@@ -366,6 +368,15 @@ int main() {
 
 		MeshResource::Sptr wizardTentMesh = ResourceManager::CreateAsset<MeshResource>("Objects/WizardTent.obj");
 		Texture2D::Sptr    wizardTentTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardTentTex.png");
+
+		MeshResource::Sptr titleMesh = ResourceManager::CreateAsset<MeshResource>("Objects/TitleScreen.obj");
+		Texture2D::Sptr    titleTex = ResourceManager::CreateAsset<Texture2D>("Textures/WizardFishingTitleTex.png");
+
+		MeshResource::Sptr manaMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Mana.obj");
+		Texture2D::Sptr    manaTex = ResourceManager::CreateAsset<Texture2D>("Textures/ManaBarFillTex.png");
+
+		MeshResource::Sptr manaOutlineMesh = ResourceManager::CreateAsset<MeshResource>("Objects/ManaBar.obj");
+		Texture2D::Sptr    manaOutlineTex = ResourceManager::CreateAsset<Texture2D>("Textures/ManaBarOutlineTex.png");
 
 
 		MeshResource::Sptr wizardTowerDoorsMesh = ResourceManager::CreateAsset<MeshResource>("Objects/Wizard_TowerDoors.obj");
@@ -469,6 +480,22 @@ int main() {
 			boxMaterial->Shininess = 2.0f;
 		}
 
+		Material::Sptr manaMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			manaMaterial->Name = "Mana bar";
+			manaMaterial->MatShader = basicShader;
+			manaMaterial->Texture = manaTex;
+			manaMaterial->Shininess = 2.0f;
+		}
+
+		Material::Sptr manaOutlineMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			manaOutlineMaterial->Name = "Mana Outline";
+			manaOutlineMaterial->MatShader = basicShader;
+			manaOutlineMaterial->Texture = manaOutlineTex;
+			manaOutlineMaterial->Shininess = 2.0f;
+		}
+
 		Material::Sptr bridgeMaterial = ResourceManager::CreateAsset<Material>();
 		{
 			bridgeMaterial->Name = "Bridge";
@@ -539,6 +566,14 @@ int main() {
 			minigameTargetMaterial->MatShader = basicShader;
 			minigameTargetMaterial->Texture = minigameTargetTex;
 			minigameTargetMaterial->Shininess = 256.0f;
+		}
+
+		Material::Sptr titleMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			titleMaterial->Name = "Title Screen";
+			titleMaterial->MatShader = basicShader;
+			titleMaterial->Texture = titleTex;
+			titleMaterial->Shininess = 256.0f;
 		}
 
 		Material::Sptr monkeyMaterial = ResourceManager::CreateAsset<Material>();
@@ -668,8 +703,8 @@ int main() {
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{
-			camera->SetPostion(glm::vec3(0, 4, 4));
-			camera->LookAt(glm::vec3(0.0f));
+			camera->SetPostion(glm::vec3(22.1f, 60.5f, 31.63f));
+			camera->SetRotation(glm::vec3(45.0f, 0.0f, 180.0f));
 
 			camera->Add<SimpleCameraControl>();
 
@@ -695,6 +730,36 @@ int main() {
 
 			staff->Add<StaffBehaviour>();
 			staff->Get<StaffBehaviour>()->cameraCords = camera->Get<SimpleCameraControl>();
+		}
+
+		GameObject::Sptr manaOutline = scene->CreateGameObject("Mana Outline");
+		{
+			// Scale up the plane
+			manaOutline->SetScale(glm::vec3(0.05f));
+			manaOutline->SetRotation(glm::vec3(0, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = manaOutline->Add<RenderComponent>();
+			renderer->SetMesh(manaOutlineMesh);
+			renderer->SetMaterial(manaOutlineMaterial);
+
+			manaOutline->Add<ManaBarOutline>();
+			manaOutline->Get<ManaBarOutline>()->cameraCords = camera->Get<SimpleCameraControl>();
+		}
+
+		GameObject::Sptr mana = scene->CreateGameObject("Mana");
+		{
+			// Scale up the plane
+			mana->SetScale(glm::vec3(0.05f));
+			mana->SetRotation(glm::vec3(0, 0, 0));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = mana->Add<RenderComponent>();
+			renderer->SetMesh(manaMesh);
+			renderer->SetMaterial(manaMaterial);
+
+			mana->Add<ManaBar>();
+			mana->Get<ManaBar>()->cameraCords = camera->Get<SimpleCameraControl>();
 		}
 
 		GameObject::Sptr MinigamePointer = scene->CreateGameObject("Minigame Pointer");
@@ -776,6 +841,7 @@ int main() {
 		GameObject::Sptr Bobber = scene->CreateGameObject("Bobber");
 		{
 			Bobber->SetScale(glm::vec3(0.5f));
+			Bobber->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 
 			RenderComponent::Sptr renderer = Bobber->Add<RenderComponent>();
 			renderer->SetMesh(bobberMesh);
@@ -1060,6 +1126,17 @@ int main() {
 			renderer->SetMaterial(dockMaterial);
 		}
 
+		GameObject::Sptr title = scene->CreateGameObject("Title");
+		{
+			title->SetScale(glm::vec3(0.5f));
+			title->SetPostion(glm::vec3(22.0f, 59.0f, 30.0f));
+			title->SetRotation(glm::vec3(0.0f, 45.0f, 90.0f));
+
+
+			RenderComponent::Sptr renderer = title->Add<RenderComponent>();
+			renderer->SetMesh(titleMesh);
+			renderer->SetMaterial(titleMaterial);
+		}
 		// Call scene awake to start up all of our components
 		scene->Window = window;
 		scene->Awake();

@@ -27,6 +27,7 @@ public:
 	virtual nlohmann::json ToJson() const override;
 	static SimpleCameraControl::Sptr FromJson(const nlohmann::json& blob);
 	PauseBehaviour::Sptr pause;
+	bool gameStart;
 
 
 protected:
@@ -36,6 +37,7 @@ protected:
 	glm::vec3 _moveSpeeds;
 	glm::dvec2 _prevMousePos;
 	glm::vec2 _currentRot;
+
 
 	bool _isMousePressed = false;
 	GLFWwindow* _window;

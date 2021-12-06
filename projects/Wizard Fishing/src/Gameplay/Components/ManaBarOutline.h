@@ -9,14 +9,14 @@ struct GLFWwindow;
 /// A simple behaviour that allows movement of a gameobject with WASD, mouse,
 /// and ctrl + space
 /// </summary>
-class ManaBar : public Gameplay::IComponent {
+class ManaBarOutline : public Gameplay::IComponent {
 public:
-	typedef std::shared_ptr<ManaBar> Sptr;
+	typedef std::shared_ptr<ManaBarOutline> Sptr;
 
-	ManaBar();
-	virtual ~ManaBar();
+	ManaBarOutline();
+	virtual ~ManaBarOutline();
 	SimpleCameraControl::Sptr cameraCords;
-
+	
 
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
@@ -29,9 +29,9 @@ public:
 
 public:
 	virtual void RenderImGui() override;
-	MAKE_TYPENAME(ManaBar);
+	MAKE_TYPENAME(ManaBarOutline);
 	virtual nlohmann::json ToJson() const override;
-	static ManaBar::Sptr FromJson(const nlohmann::json& blob);
+	static ManaBarOutline::Sptr FromJson(const nlohmann::json& blob);
 	PauseBehaviour::Sptr pause;
 
 
@@ -39,3 +39,5 @@ protected:
 
 	GLFWwindow* _window;
 };
+
+

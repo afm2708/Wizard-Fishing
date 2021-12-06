@@ -36,8 +36,8 @@ void MinigameTargetR::Update(float deltaTime)
         if ((MinigameTargetR::minigame->minigameActive))
         {
             GetGameObject()->SetPostion(glm::vec3(MinigameTargetR::minigame->rightEdge));
-            GetGameObject()->SetRotation(glm::vec3(0, 0, MinigameTargetR::minigame->rotation -90.0f));
-            GetGameObject()->SetScale(glm::vec3(0.1f, 0, 0.1f));
+            GetGameObject()->SetRotation(glm::vec3(90, 45, MinigameTargetR::minigame->rotation + 90.0));
+            GetGameObject()->SetScale(glm::vec3(0.1f, 0.1, 0.1f));
         }
         else {
             GetGameObject()->SetPostion(glm::vec3(0.0, 0.0, -20.0));
