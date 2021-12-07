@@ -60,6 +60,7 @@ void FishMovement::Update(float deltaTime) {
             caughtPoints.push_back(GetGameObject()->GetScene()->FindObjectByName("Bobber")->GetPosition());
             SetPoints(caughtPoints);
             lured = true;
+            timer = 0.0f;
         }
         if (!hooked) timer += deltaTime;
         //Ensure we are not "over time" and move to the next segment
@@ -81,7 +82,7 @@ void FishMovement::Update(float deltaTime) {
             }
             glm::vec3 lerpCoords((points[1] * time) + points[0] * (1 - time));
             GetGameObject()->SetPostion(lerpCoords);
-            GetGameObject()->LookAt(points[1]);
+            GetGameObject()->LookAt(points[1]+points[0]);
         }
 
         // Neither Catmull nor Bezier make sense with less than 4 points.
